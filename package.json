@@ -1,0 +1,12 @@
+{
+  "name": "typeroute",
+  "private": true,
+  "scripts": {
+    "lint": "biome lint --apply ./",
+    "format": "biome format --apply ./",
+    "fix": "biome check --apply ./"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3"
+  }
+}

@@ -1,0 +1,1 @@
+export { createRouteFunction } from "./createRouteFunction";

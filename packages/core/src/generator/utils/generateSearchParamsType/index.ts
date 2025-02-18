@@ -1,0 +1,1 @@
+export { generateSearchParamsType } from "./generateSearchParamsType";
