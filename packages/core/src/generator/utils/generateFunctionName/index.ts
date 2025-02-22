@@ -1,1 +1,0 @@
-export { generateFunctionName } from "./generateFunctionName";

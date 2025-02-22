@@ -1,26 +1,42 @@
 {
-  "name": "@typeroute/nextjs",
-  "private": true,
+  "name": "@safe-routes/nextjs",
+  "version": "0.1.0",
+  "private": false,
   "type": "module",
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
+  "bin": {
+    "safe-routes": "./dist/cli.js"
+  },
   "files": [
-    "dist"
+    "dist",
+    "index.js",
+    "index.mjs",
+    "index.d.ts",
+    ".safe-routes"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "types": "./index.d.ts",
+      "import": "./index.mjs"
+    }
+  },
   "dependencies": {
-    "@typeroute/core": "workspace:*"
+    "chokidar": "4.0.3",
+    "commander": "13.1.0"
   },
   "devDependencies": {
     "@types/node": "22.13.4",
-    "typescript": "5.7.3",
     "vite": "6.1.0",
+    "typescript": "5.7.3",
     "vitest": "3.0.5"
   }
 }

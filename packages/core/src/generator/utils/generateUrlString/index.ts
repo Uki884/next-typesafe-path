@@ -1,1 +1,0 @@
-export { generateUrlString } from "./generateUrlString";

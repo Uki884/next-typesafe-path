@@ -35,5 +35,12 @@ tsconfig.tsbuildinfo
 
 .specstory
 
-docs
 tmp
+
+.cursor
+
+.next
+
+dist
+
+.safe-routes

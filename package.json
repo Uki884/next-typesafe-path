@@ -1,5 +1,5 @@
 {
-  "name": "typeroute",
+  "name": "@safe-routes/monorepo",
   "private": true,
   "scripts": {
     "lint": "biome lint --apply ./",

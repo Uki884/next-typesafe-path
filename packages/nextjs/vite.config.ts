@@ -3,11 +3,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/index.ts",
+      entry: ["src/cli.ts"],
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["@typeroute/core"],
+      external: ["chokidar", "commander", "path", "fs/promises"],
     },
   },
 });
