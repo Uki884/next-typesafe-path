@@ -3,11 +3,11 @@ import { readdir, stat } from "fs/promises";
 import { RouteFunctionDefinition } from "../generator/createRouteFunction";
 import { createRouteFunction } from "../generator/createRouteFunction";
 import { RouteSegment } from "../types";
+import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { isPage } from "./utils/isPage";
 import { isRouteGroup } from "./utils/isRouteGroup";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
 import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
-import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
   return segments
@@ -75,5 +75,5 @@ export function createAppScanner(appDir: string) {
       }
     }
     return routes;
-  }
+  };
 }

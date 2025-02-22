@@ -26,10 +26,7 @@ export async function generateTypes(options: Options) {
 
     // .jsファイルの生成
     const jsContent = createFileContent(allRoutes, "js");
-    await writeToFile(
-      jsContent,
-      `${options.outJsDir}/index.js`,
-    );
+    await writeToFile(jsContent, `${options.outJsDir}/index.js`);
   } catch (error) {
     console.error("Error generating types:", error);
   }

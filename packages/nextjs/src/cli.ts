@@ -12,7 +12,10 @@ program
     const appDir = path.resolve(process.cwd(), "app");
     const pagesDir = path.resolve(process.cwd(), "pages");
     const outDtsDir = path.resolve(process.cwd(), "node_modules/.safe-routes");
-    const outJsDir = path.resolve(process.cwd(), "./node_modules/@safe-routes/nextjs/.safe-routes");
+    const outJsDir = path.resolve(
+      process.cwd(),
+      "./node_modules/@safe-routes/nextjs/.safe-routes",
+    );
 
     // 初回生成
     await generateTypes({ appDir, outDtsDir, outJsDir, pagesDir });
@@ -30,11 +33,21 @@ program
       });
 
       watcher
-        .on("add", () => generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }))
-        .on("unlink", () => generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }))
-        .on("addDir", () => generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }))
-        .on("unlinkDir", () => generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }))
-        .on("change", () => generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }));
+        .on("add", () =>
+          generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }),
+        )
+        .on("unlink", () =>
+          generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }),
+        )
+        .on("addDir", () =>
+          generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }),
+        )
+        .on("unlinkDir", () =>
+          generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }),
+        )
+        .on("change", () =>
+          generateTypes({ appDir, outDtsDir, outJsDir, pagesDir }),
+        );
     }
   });
 
