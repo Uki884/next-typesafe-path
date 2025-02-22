@@ -32,19 +32,7 @@ export function createAppScanner(appDir: string) {
     for (const item of items) {
       const fullPath = path.join(currentPath, item);
 
-      // ルートグループの処理
-      if (isRouteGroup(item)) {
-        const stats = await stat(fullPath);
-        if (stats.isDirectory()) {
-          // ルートグループ内を再帰的に探索
-          routes.push(
-            ...(await scan({
-              currentPath: fullPath,
-              parentSegments,
-              accumulatedRoutes: [],
-            })),
-          );
-        }
+      if (isIgnoreRoute(item)) {
         continue;
       }
 
@@ -56,8 +44,15 @@ export function createAppScanner(appDir: string) {
         });
         routes.push(routeFunctionDefinition);
       } else {
-        if (isIgnoreRoute(item)) {
-          continue;
+        // ルートグループの処理
+        if (isRouteGroup(item)) {
+          routes.push(
+            ...(await scan({
+              currentPath: fullPath,
+              parentSegments: [],
+              accumulatedRoutes,
+            })),
+          );
         }
 
         const staticParentPath = getStaticParentPath(parentSegments);
