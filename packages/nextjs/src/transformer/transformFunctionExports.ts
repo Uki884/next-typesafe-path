@@ -15,20 +15,20 @@ export const transformFunctionExports = (
 
   if (type === "dts") {
     return `
-export type RoutePath = ${routePaths};
+export type SafeRoutePath = ${routePaths};
 
-type RouteParams<T extends RoutePath> = (typeof routes)[T]['params'];
-type RouteSearchParams<T extends RoutePath> = (typeof routes)[T]['searchParams'];
+type SafeRouteParams<T extends SafeRoutePath> = (typeof routes)[T]['params'];
+type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof routes)[T]['searchParams'];
 
 ${safeRoute}
 
-export declare const routes: {
+export declare const safeRoutes: {
 ${routeDefinitions.join(",\n")}
 };`;
   }
 
   return `
-export const routes = {
+export const safeRoutes = {
 ${routeDefinitions.join(",\n")}
 };
 
