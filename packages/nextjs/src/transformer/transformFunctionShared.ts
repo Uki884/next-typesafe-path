@@ -7,7 +7,7 @@ type SearchParams = {
 const buildSearchParams = (params?: SearchParams): string => {
   if (!params) return "";
   const searchParams = new URLSearchParams();
-  const safeDecodeURIComponent = (value) => {
+  const safeDecodeURIComponent = (value: string) => {
     try {
       return decodeURIComponent(value);
     } catch {
