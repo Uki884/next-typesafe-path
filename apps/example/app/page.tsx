@@ -1,11 +1,6 @@
 import Link from "next/link";
 import { safeRoute } from "@safe-routes/nextjs";
 
-export type SearchParams = {
-  page?: number;
-  hoge: string;
-};
-
 export default function HomePage() {
   const userId = safeRoute(
     "/users/[user-id]/",
@@ -17,25 +12,23 @@ export default function HomePage() {
     { filters: ["men", "shoes"] },
     { sort: "asc", page: 1 },
   );
-  safeRoute("/", { hoge: ''});
-  safeRoute("/users/[user-id]/", { userId: 1 });
+  safeRoute("/");
+  safeRoute("/users/[user-id]/", { userId: 1 }, { page: 1});
   safeRoute("/shop/", { isRequired: true });
-  safeRoute('/login/');
+  safeRoute('/login/', { redirect: "https://google.com" });
 
   return (
     <div>
       <h1>Route Examples</h1>
       <ul>
         <li>
-          <Link href={safeRoute("/blog/[slug]/", { slug: "hello" })}>
+          <Link href={safeRoute("/blog/[slug]/", { slug: "hello" }, { page: 1})}>
             Dynamic Route
           </Link>
         </li>
         <li>
           <Link
-            href={safeRoute("/shop/[...categories]/", {
-              categories: ["men", "shoes"],
-            })}
+            href={safeRoute("/shop/[...categories]/", { categories: ["men", "shoes"] }, { page: 1 })}
           >
             Catch-all Route
           </Link>
@@ -56,7 +49,7 @@ export default function HomePage() {
             href={safeRoute("/users/[user-id]/posts/[post-id]/", {
               userId: "123",
               postId: "11",
-            })}
+            }, { page: 1})}
           >
             Multiple Dynamic Segments
           </Link>
