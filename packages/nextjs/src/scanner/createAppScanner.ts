@@ -6,7 +6,7 @@ import { isPage } from "./utils/isPage";
 import { isRouteGroup } from "./utils/isRouteGroup";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
 import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
-import { generateSearchParamsType } from "../generator/utils/generateSearchParamsType";
+import { generateSearchParamsType } from "../generator/generateSearchParamsType";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
   return segments

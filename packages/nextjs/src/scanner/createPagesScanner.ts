@@ -4,7 +4,7 @@ import { RouteFunctionDefinition, RouteSegment } from "../types";
 import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
 import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
-import { generateSearchParamsType } from "../generator/utils/generateSearchParamsType";
+import { generateSearchParamsType } from "../generator/generateSearchParamsType";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
   return segments
