@@ -26,28 +26,29 @@ npm install @safe-routes/nextjs
 
 ## Setup
 
+The CLI will generate type definitions in the `.safe-routes` directory at the root of your project.
+
 Add the CLI to your package.json scripts:
 
 ```json
 {
   "scripts": {
-    "dev": "safe-routes --watch & next dev",
+    "dev": "npm run dev:routes & npm run dev:next",
+    "dev:routes": "safe-routes --watch",
+    "dev:next": "next dev",
     "build": "safe-routes && next build"
   }
 }
 ```
 
-### Using pnpm
-
-When using pnpm, additional configuration is required for correct module resolution:
+You can customize the output directory using the `--out-dir` option:
 
 1. Update your package.json scripts:
 
 ```json
 {
   "scripts": {
-    "dev": "safe-routes --watch --out-dir ./node_modules/.safe-routes & next dev",
-    "build": "safe-routes --out-dir ./node_modules/.safe-routes && next build"
+    "dev:routes": "safe-routes --watch --out-dir ./custom/path"
   }
 }
 ```
@@ -58,7 +59,7 @@ When using pnpm, additional configuration is required for correct module resolut
 {
   "compilerOptions": {
     "paths": {
-      "@safe-routes/nextjs": ["./node_modules/.safe-routes"]
+      "@safe-routes/nextjs": ["./custom/path"]
     }
   }
 }
