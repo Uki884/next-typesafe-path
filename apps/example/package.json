@@ -2,7 +2,7 @@
   "name": "@safe-routes/example",
   "private": true,
   "scripts": {
-    "dev": "safe-routes --watch & next dev",
+    "dev": "safe-routes --watch --out-dir ./node_modules/.safe-routes & next dev",
     "build": "safe-routes && next build",
     "start": "next start"
   },

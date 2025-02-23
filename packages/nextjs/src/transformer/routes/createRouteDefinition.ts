@@ -1,4 +1,4 @@
-import { RouteFunctionDefinition } from "../../generator/createRouteFunction";
+import { RouteFunctionDefinition } from "../../types";
 import { convertPathToParamFormat } from "./createRoutePaths";
 
 export const createRouteDefinition = (

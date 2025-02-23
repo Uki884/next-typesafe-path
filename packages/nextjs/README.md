@@ -59,4 +59,4 @@ const url = safeRoute('/users/[id]/', { id: '123' }, { page: 1 });
 
 ## License
 
-MIT 
+MIT

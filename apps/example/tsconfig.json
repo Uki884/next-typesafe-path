@@ -22,7 +22,10 @@
       }
     ],
     "baseUrl": ".",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "@safe-routes/nextjs": ["./node_modules/.safe-routes"]
+    }
   },
   "include": [
     "next-env.d.ts",

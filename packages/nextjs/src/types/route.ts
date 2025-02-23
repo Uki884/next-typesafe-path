@@ -12,3 +12,8 @@ export type RouteSegment = {
   dynamicType: DynamicRouteType;
   parentSegment?: string;
 };
+
+export type RouteFunctionDefinition = {
+  routeSegments: RouteSegment[];
+  searchParamsType: string;
+};

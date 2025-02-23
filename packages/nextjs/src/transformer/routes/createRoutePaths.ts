@@ -1,5 +1,4 @@
-import { RouteFunctionDefinition } from "../../generator/createRouteFunction";
-import { RouteSegment } from "../../types";
+import { RouteFunctionDefinition, RouteSegment } from "../../types";
 
 export const convertPathToParamFormat = (segments: RouteSegment[]) => {
   if (segments.length === 0) return "";

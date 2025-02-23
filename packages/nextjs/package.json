@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "prepare": "vite build",
     "dev": "vite",
     "build": "vite build",
     "test": "vitest",
@@ -30,8 +31,7 @@
     "dist",
     "index.js",
     "index.mjs",
-    "index.d.ts",
-    ".safe-routes"
+    "index.d.ts"
   ],
   "main": "./index.js",
   "module": "./index.mjs",

@@ -1,6 +1,6 @@
-import { RouteFunctionDefinition } from "../generator/createRouteFunction";
 import { transformFunctionExports } from "../transformer/transformFunctionExports";
 import { transformFunctionShared } from "../transformer/transformFunctionShared";
+import { RouteFunctionDefinition } from "../types";
 
 export const createFileContent = (
   routes: RouteFunctionDefinition[],

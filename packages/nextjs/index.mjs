@@ -1,1 +1,1 @@
-export * from "./.safe-routes";
+export * from ".safe-routes";
