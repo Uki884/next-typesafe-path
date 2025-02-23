@@ -4,7 +4,9 @@
   "scripts": {
     "lint": "biome lint --apply ./",
     "format": "biome format --apply ./",
-    "fix": "biome check --apply ./"
+    "fix": "biome check --apply ./",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3"
