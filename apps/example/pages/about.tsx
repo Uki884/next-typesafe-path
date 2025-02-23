@@ -1,4 +1,4 @@
-import { safeRoute } from "@safe-routes/nextjs";
+import { safeRoute, safeRoutes } from "@safe-routes/nextjs";
 
 export type SearchParams = {
   locale: "en";

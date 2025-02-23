@@ -29,7 +29,7 @@ program
       process.exit(1);
     }
 
-    const outDir = path.resolve(process.cwd(), options.outDir || "node_modules/.safe-routes");
+    const outDir = path.resolve(process.cwd(), options.outDir || ".safe-routes");
 
     await generateTypes({
       appDir: appDir || "",

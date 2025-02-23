@@ -1,18 +1,10 @@
-export const transformFunctionShared = (type: "js" | "dts" = "js") => {
-  // for dts file
-  if (type === "dts") {
-    return `
+export const transformFunctionShared = () => {
+  return `
 type SearchParams = {
   [key: string]: string | number | (string | number)[];
 };
 
-declare function buildSearchParams(params?: SearchParams): string;
-`;
-  }
-
-  // for js file
-  return `
-const buildSearchParams = (params) => {
+const buildSearchParams = (params?: SearchParams): string => {
   if (!params) return "";
   const searchParams = new URLSearchParams();
   const safeDecodeURIComponent = (value) => {
@@ -35,6 +27,5 @@ const buildSearchParams = (params) => {
     }
   }
   return \`?\${searchParams.toString()}\`;
-};
-`;
+}`;
 };

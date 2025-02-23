@@ -2,12 +2,9 @@ import { transformFunctionExports } from "../transformer/transformFunctionExport
 import { transformFunctionShared } from "../transformer/transformFunctionShared";
 import { RouteFunctionDefinition } from "../types";
 
-export const createFileContent = (
-  routes: RouteFunctionDefinition[],
-  type: "js" | "dts",
-): string => {
-  const shared = transformFunctionShared(type);
-  const exports = transformFunctionExports(routes, type);
+export const createFileContent = (routes: RouteFunctionDefinition[]): string => {
+  const shared = transformFunctionShared();
+  const exports = transformFunctionExports(routes);
 
   return `${shared}\n${exports}`;
 };
