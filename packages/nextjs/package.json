@@ -22,8 +22,7 @@
     "dev": "vite",
     "build": "vite build",
     "test": "vitest",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "vite build"
+    "typecheck": "tsc --noEmit"
   },
   "bin": {
     "safe-routes": "./dist/cli.js"
