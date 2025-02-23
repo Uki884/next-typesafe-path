@@ -7,7 +7,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["chokidar", "commander", "path", "fs/promises"],
+      external: ["chokidar", "commander", "path", "fs/promises", "node:fs"],
     },
   },
 });

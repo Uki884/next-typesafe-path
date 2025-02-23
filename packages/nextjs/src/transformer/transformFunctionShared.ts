@@ -1,5 +1,5 @@
 export const transformFunctionShared = (type: "js" | "dts" = "js") => {
-  // 型定義ファイル用
+  // for dts file
   if (type === "dts") {
     return `
 type SearchParams = {
@@ -10,7 +10,7 @@ declare function buildSearchParams(params?: SearchParams): string;
 `;
   }
 
-  // JSファイル用
+  // for js file
   return `
 const buildSearchParams = (params) => {
   if (!params) return "";

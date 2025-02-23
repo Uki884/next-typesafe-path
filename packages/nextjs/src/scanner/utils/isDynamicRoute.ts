@@ -1,13 +1,13 @@
 export const isDynamicRoute = (segment: string) => {
-  // オプショナルキャッチオール [[...slug]]
+  // optional catch-all [[...slug]]
   if (segment.startsWith("[[...") && segment.endsWith("]]")) {
     return "optional-catch-all";
   }
-  // キャッチオール [...slug]
+  // catch-all [...slug]
   if (segment.startsWith("[...") && segment.endsWith("]")) {
     return "catch-all";
   }
-  // 通常の動的ルート [id]
+  // normal dynamic route [id]
   if (segment.startsWith("[") && segment.endsWith("]")) {
     return "dynamic";
   }
