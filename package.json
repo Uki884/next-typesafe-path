@@ -1,6 +1,7 @@
 {
   "name": "@safe-routes/monorepo",
   "private": true,
+  "packageManager": "pnpm@9.13.2",
   "scripts": {
     "lint": "biome lint --apply ./",
     "format": "biome format --apply ./",
