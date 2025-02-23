@@ -1,6 +1,6 @@
 {
   "name": "@safe-routes/nextjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "type": "module",
   "sideEffects": false,
@@ -13,7 +13,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Uki884/safe-routes"
+    "url": "https://github.com/Uki884/safe-routes",
+    "directory": "packages/nextjs"
   },
   "license": "MIT",
   "scripts": {
@@ -22,10 +23,7 @@
     "build": "vite build",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "vite build",
-    "changeset": "changeset",
-    "version": "changeset version",
-    "release": "changeset publish"
+    "prepublishOnly": "vite build"
   },
   "bin": {
     "safe-routes": "./dist/cli.js"

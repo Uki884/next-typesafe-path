@@ -33,7 +33,8 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm --filter @safe-routes/nextjs release
+          version: pnpm version
+          publish: pnpm release
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
