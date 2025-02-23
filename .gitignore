@@ -44,5 +44,3 @@ tmp
 dist
 
 .safe-routes
-
-.changeset/*.md
