@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.3
+
+### Patch Changes
+
+- [`e878bfc`](https://github.com/Uki884/safe-routes/commit/e878bfc7601e40aa12eca896f7d3b6f2b3387f9e) Thanks [@Uki884](https://github.com/Uki884)! - fix type
+
 ## 0.0.2
 
 ### Patch Changes
