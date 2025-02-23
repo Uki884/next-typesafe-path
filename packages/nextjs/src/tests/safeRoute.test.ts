@@ -43,7 +43,6 @@ describe('safeRoute', () => {
     });
 
     test('optional params (catch-all)', () => {
-      console.log(safeRoute('/products/[[...filters]]/'));
       expect(safeRoute('/products/[[...filters]]/')).toBe('/products/');
       expect(safeRoute('/products/[[...filters]]/', { filters: ['sale', 'winter'] }))
         .toBe('/products/sale/winter/');

@@ -41,8 +41,8 @@ export function safeRoute<T extends SafeRoutePath>(
   const params = hasDynamicParams ? args[0] : {};
   const searchParams = hasDynamicParams ? args[1] : args[0];
 
-  const resolvedPath = path.replace(/\\[(?:\\[)?(?:\\.\\.\\.)?([^\\]]+?)\\](?:\\])?/g, (match, key) => {
-    const paramKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  const resolvedPath = path.replace(/\\[(?:\\[)?(?:\\.\\.\\.)?([^\\]]+?)\\](?:\\])?/g, (_, key: string) => {
+    const paramKey = key.replace(/-([a-z])/g, (_: string, c: string) => c.toUpperCase());
     const value = params?.[paramKey] || "";
 
     if (Array.isArray(value)) {
