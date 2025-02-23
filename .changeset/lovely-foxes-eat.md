@@ -2,4 +2,4 @@
 "@safe-routes/nextjs": patch
 ---
 
-fix find directory
+fix github actions
