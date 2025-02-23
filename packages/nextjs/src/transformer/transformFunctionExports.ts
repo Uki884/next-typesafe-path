@@ -3,34 +3,20 @@ import { createRouteDefinition } from "./routes/createRouteDefinition";
 import { createRoutePaths } from "./routes/createRoutePaths";
 import { createSafeRoute } from "./routes/createSafeRoute";
 
-export const transformFunctionExports = (
-  routes: RouteFunctionDefinition[],
-  type: "js" | "dts" = "js",
-) => {
+export const transformFunctionExports = (routes: RouteFunctionDefinition[]) => {
   const routePaths = createRoutePaths(routes);
-  const routeDefinitions = routes.map((route) =>
-    createRouteDefinition(route, type),
-  );
-  const safeRoute = createSafeRoute(type);
+  const routeDefinitions = routes.map((route) => createRouteDefinition(route));
+  const safeRoute = createSafeRoute();
 
-  if (type === "dts") {
-    return `
-export type RoutePath = ${routePaths};
+  return `
+export type SafeRoutePath = ${routePaths};
 
-type RouteParams<T extends RoutePath> = (typeof routes)[T]['params'];
-type RouteSearchParams<T extends RoutePath> = (typeof routes)[T]['searchParams'];
+type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
+type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
 
 ${safeRoute}
 
-export declare const routes: {
+export const safeRoutes = {
 ${routeDefinitions.join(",\n")}
-};`;
-  }
-
-  return `
-export const routes = {
-${routeDefinitions.join(",\n")}
-};
-
-${safeRoute}`;
+} as const;`;
 };

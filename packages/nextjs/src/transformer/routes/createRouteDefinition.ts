@@ -3,23 +3,16 @@ import { convertPathToParamFormat } from "./createRoutePaths";
 
 export const createRouteDefinition = (
   route: RouteFunctionDefinition,
-  type: "js" | "dts",
 ) => {
   const path =
     route.routeSegments.length === 0
       ? `"/"`
       : `"/${convertPathToParamFormat(route.routeSegments)}/"`;
 
-  if (type === "dts") {
-    return `${path}: {
-      params: ${createParamsType(route)},
-      searchParams: ${route.searchParamsType}
-    }`;
-  }
-
   return `${path}: {
-    params: {},
-    searchParams: {}
+    params: {} as ${createParamsType(route)},
+    // @ts-ignore
+    searchParams: {} as ${route.searchParamsType}
   }`;
 };
 

@@ -20,13 +20,9 @@ export async function generateTypes(options: Options) {
     const pagesRoutes = pagesScanner ? await pagesScanner() : [];
     const allRoutes = [...appRoutes, ...pagesRoutes];
 
-    // generate dts file
-    const dtsContent = createFileContent(allRoutes, "dts");
-    await writeToFile(dtsContent, `${options.outDir}/index.d.ts`);
-
-    // generate js file
-    const jsContent = createFileContent(allRoutes, "js");
-    await writeToFile(jsContent, `${options.outDir}/index.js`);
+    // TypeScriptソースファイルの生成
+    const content = createFileContent(allRoutes);
+    await writeToFile(content, `${options.outDir}/index.ts`);
   } catch (error) {
     console.error("Error generating types:", error);
   }

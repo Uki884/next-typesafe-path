@@ -1,25 +1,20 @@
-export const createSafeRoute = (type: "js" | "dts") => {
-  if (type === "dts") {
-    return `
+export const createSafeRoute = () => {
+  return `
 type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
 
-type SafeRouteArgs<T extends RoutePath> = RouteParams<T> extends Record<string, never>
-  ? IsAllOptional<RouteSearchParams<T>> extends true
-    ? [searchParams?: RouteSearchParams<T>]
-    : [searchParams: RouteSearchParams<T>]
-  : [params: RouteParams<T>, searchParams?: RouteSearchParams<T>];
+type SafeRouteArgs<T extends SafeRoutePath> = SafeRouteParams<T> extends Record<string, never>
+  ? IsAllOptional<SafeRouteSearchParams<T>> extends true
+    ? [searchParams?: SafeRouteSearchParams<T>] | []
+    : [searchParams: SafeRouteSearchParams<T>]
+  : [params: SafeRouteParams<T>, searchParams?: SafeRouteSearchParams<T>];
 
-export declare function safeRoute<T extends RoutePath>(
+export function safeRoute<T extends SafeRoutePath>(
   path: T,
-  ...searchParams: SafeRouteArgs<T>
-): T;`;
-  }
-
-  return `
-export function safeRoute(path, paramsOrSearchParams, maybeSearchParams) {
+  ...args: SafeRouteArgs<T>
+): T {
   const hasDynamicParams = path.includes('[');
-  const params = hasDynamicParams ? paramsOrSearchParams : {};
-  const searchParams = hasDynamicParams ? maybeSearchParams : paramsOrSearchParams;
+  const params = hasDynamicParams ? args[0] : {};
+  const searchParams = hasDynamicParams ? args[1] : args[0];
 
   const resolvedPath = path.replace(/\\[(?:\\[)?(?:\\.\\.\\.)?([^\\]]+?)\\](?:\\])?/g, (match, key) => {
     const paramKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -29,6 +24,6 @@ export function safeRoute(path, paramsOrSearchParams, maybeSearchParams) {
     }
     return String(value || "");
   });
-  return \`\${resolvedPath}\${buildSearchParams(searchParams)}\`;
+  return \`\${resolvedPath}\${buildSearchParams(searchParams)}\` as T;
 }`;
 };
