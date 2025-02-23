@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.2
+
+### Patch Changes
+
+- [#16](https://github.com/Uki884/safe-routes/pull/16) [`371d95e`](https://github.com/Uki884/safe-routes/commit/371d95ea08899561c18b925443065b8d2421ce1f) Thanks [@Uki884](https://github.com/Uki884)! - change type generation and reference method
+
 ## 0.1.2
 
 ### Patch Changes
