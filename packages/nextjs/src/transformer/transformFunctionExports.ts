@@ -11,9 +11,8 @@ export const transformFunctionExports = (routes: RouteFunctionDefinition[]) => {
   return `
 export type SafeRoutePath = ${routePaths};
 
-type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
-type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
-
+export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
+export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
 ${safeRoute}
 
 export const safeRoutes = {

@@ -9,13 +9,12 @@ export default function HomePage() {
   );
   safeRoute(
     "/products/[[...filters]]/",
-    { filters: ["men", "shoes"] },
-    { sort: "asc", page: 1 },
+    {},
   );
   safeRoute("/");
   safeRoute("/users/[user-id]/", { userId: 1 }, { page: 1});
-  safeRoute("/shop/", { isRequired: true });
-  safeRoute('/login/', { redirect: "https://google.com" });
+  safeRoute("/shop/", { isRequired: true, isOptional: 1 });
+  safeRoute('/login/', { redirect: "https://example.com" });
 
   return (
     <div>
@@ -28,7 +27,7 @@ export default function HomePage() {
         </li>
         <li>
           <Link
-            href={safeRoute("/shop/[...categories]/", { categories: ["men", "shoes"] }, { page: 1 })}
+            href={safeRoute("/shop/[...categories]/", { categories: ["men", "shoes"] }, { page: 1})}
           >
             Catch-all Route
           </Link>
@@ -38,7 +37,7 @@ export default function HomePage() {
             href={safeRoute(
               "/products/[[...filters]]/",
               {},
-              { sort: "asc", page: 1 },
+              { page: 1 }
             )}
           >
             Optional Catch-all
