@@ -1,5 +1,14 @@
 # @safe-routes/nextjs
 
+## 0.0.5
+
+### Patch Changes
+
+- [#24](https://github.com/Uki884/safe-routes/pull/24) [`014da05`](https://github.com/Uki884/safe-routes/commit/014da054e6c989df391b3a7da5f6cdfbe968894c) Thanks [@Uki884](https://github.com/Uki884)! - - Fix URL encoding to use %20 instead of + for spaces
+  - Add type safety for URLSearchParams entries
+  - Fix kebab-case parameter handling in dynamic routes
+  - Remove redundant slashes in URL paths
+
 ## 0.0.4
 
 ### Patch Changes
