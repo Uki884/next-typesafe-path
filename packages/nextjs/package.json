@@ -22,7 +22,10 @@
     "build": "vite build",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "vite build"
+    "prepublishOnly": "vite build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
   "bin": {
     "safe-routes": "./dist/cli.js"
