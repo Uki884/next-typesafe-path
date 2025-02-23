@@ -1,6 +1,6 @@
 {
   "name": "@safe-routes/nextjs",
-  "version": "0.1.2",
+  "version": "0.0.1",
   "private": false,
   "type": "module",
   "sideEffects": false,
