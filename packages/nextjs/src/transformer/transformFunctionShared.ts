@@ -1,6 +1,6 @@
 export const transformFunctionShared = () => {
   return `
-type SearchParams = {
+export type SearchParams = {
   [key: string]: string | number | (string | number)[];
 };
 
@@ -14,6 +14,14 @@ const buildSearchParams = (params?: SearchParams): string => {
       return value;
     }
   };
+
+  // Override URLSearchParams toString to use %20 instead of + for spaces
+  searchParams.toString = function() {
+    return Array.from<[string, string]>(this.entries())
+      .map(([key, value]) => \`\${encodeURIComponent(key)}=\${encodeURIComponent(value)}\`)
+      .join('&');
+  };
+
   for (const [key, values] of Object.entries(params)) {
     if (Array.isArray(values)) {
       const uniqueValues = Array.from(new Set([...values]));
@@ -27,5 +35,5 @@ const buildSearchParams = (params?: SearchParams): string => {
     }
   }
   return \`?\${searchParams.toString()}\`;
-}`;
+};`;
 };

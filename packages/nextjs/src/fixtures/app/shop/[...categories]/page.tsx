@@ -1,5 +1,4 @@
-export type SearchParams = Record<
-  string,
-  string | number | (string | number)[]
->;
+export type SearchParams = {
+  page: number;
+};
 export default function ShopCategoriesPage() {}

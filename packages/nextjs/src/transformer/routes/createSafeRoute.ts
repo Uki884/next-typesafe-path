@@ -44,11 +44,19 @@ export function safeRoute<T extends SafeRoutePath>(
   const resolvedPath = path.replace(/\\[(?:\\[)?(?:\\.\\.\\.)?([^\\]]+?)\\](?:\\])?/g, (match, key) => {
     const paramKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
     const value = params?.[paramKey] || "";
+
     if (Array.isArray(value)) {
+      if (value.length === 0) return "";
       return value.join("/");
     }
-    return String(value || "");
+
+    const stringValue = String(value || "");
+    return stringValue === "" ? "" : stringValue;
   });
-  return \`\${resolvedPath}\${buildSearchParams(searchParams as SearchParams)}\` as T;
+
+  // Remove extra slashes
+  const normalizedPath = resolvedPath.replace(/\\/+/g, '/');
+
+  return \`\${normalizedPath}\${buildSearchParams(searchParams as SearchParams)}\` as T;
 }`;
 };
