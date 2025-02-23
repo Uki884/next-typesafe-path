@@ -9,8 +9,8 @@ import { generateTypes } from "./generator";
 program
   .name("safe-routes")
   .description("Generate type-safe routes for Next.js")
-  .option("-w, --watch", "Watch for file changes")
-  .option("-o, --out-dir <path>", "Output directory")
+  .option("-w, --watch", "Watch for file changes and regenerate types")
+  .option("-o, --out-dir <path>", "Output directory (default: .safe-routes)")
   .action(async (options) => {
 
     const findDirectory = (baseName: string): string | null => {

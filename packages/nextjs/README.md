@@ -1,10 +1,11 @@
 # @safe-routes/nextjs
 
-Type-safe route utilities for Next.js App Router and Pages Router.
+Zero-dependency type-safe routing utilities that work seamlessly with Next.js App Router and Pages Router.
 
 ## Features
 
 - Full TypeScript support
+- Zero runtime dependencies
 - App Router support
   - Dynamic routes ([id])
   - Catch-all routes ([...slug])
@@ -18,10 +19,19 @@ Type-safe route utilities for Next.js App Router and Pages Router.
   - Nested routes
   - SearchParams type inference
 
+## Acknowledgments
+
+This project is inspired by:
+- [safe-routes](https://github.com/yesmeck/safe-routes) - Type-safe routing for React Router apps
+
 ## Installation
 
 ```bash
-npm install @safe-routes/nextjs
+npm install @safe-routes/nextjs --save-dev
+# or
+yarn add @safe-routes/nextjs --dev
+# or
+pnpm add @safe-routes/nextjs --dev
 ```
 
 ## Setup
@@ -63,6 +73,24 @@ You can customize the output directory using the `--out-dir` option:
     }
   }
 }
+```
+
+## CLI Options
+
+```bash
+Usage: safe-routes [options]
+
+Options:
+  -w, --watch            Watch for file changes and regenerate types
+  -o, --out-dir <path>  Output directory (default: .safe-routes)
+  -h, --help           Display help for command
+```
+
+### Examples
+
+```bash
+# Watch mode with custom output directory
+safe-routes --watch --out-dir ./types
 ```
 
 ## Usage
@@ -138,29 +166,10 @@ export type SearchParams = {
 safeRoute('/login/', { redirect: '/dashboard' });  // => /login/?redirect=/dashboard
 ```
 
-### Type Safety
-
-The `safeRoute` function provides full type safety:
-
-- Path validation
-- Required/optional parameters checking
-- Search params type inference
-- Compile-time error detection
-
-```typescript
-// ✅ Valid
-safeRoute('/users/[id]/', { id: '123' });
-
-// ❌ Type Error: Missing required parameter 'id'
-safeRoute('/users/[id]/');
-
-// ❌ Type Error: Unknown parameter 'unknown'
-safeRoute('/about/', { unknown: 'value' });
-
-// ❌ Type Error: Invalid search param type
-safeRoute('/users/[id]/', { id: '123' }, { tab: 'invalid' });
-```
-
 ## License
 
 MIT
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
