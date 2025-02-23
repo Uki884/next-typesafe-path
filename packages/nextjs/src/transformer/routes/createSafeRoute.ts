@@ -1,7 +1,7 @@
 export const createSafeRoute = (type: "js" | "dts") => {
   if (type === "dts") {
     return `
-type IsAllOptional<T> = { [K in keyof T]?: unknown } extends T ? true : false;
+type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
 
 type SafeRouteArgs<T extends RoutePath> = RouteParams<T> extends Record<string, never>
   ? IsAllOptional<RouteSearchParams<T>> extends true

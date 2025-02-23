@@ -1,5 +1,5 @@
 import path from "path";
-import { readdir, stat } from "fs/promises";
+import { readdir } from "fs/promises";
 import { RouteFunctionDefinition, RouteSegment } from "../types";
 import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { isPage } from "./utils/isPage";

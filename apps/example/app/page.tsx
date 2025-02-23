@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { safeRoute } from "../node_modules/@safe-routes/nextjs";
+import { safeRoute } from "@safe-routes/nextjs";
 
 export type SearchParams = {
-  page: number;
+  page?: number;
   hoge: string;
 };
 
@@ -17,10 +17,10 @@ export default function HomePage() {
     { filters: ["men", "shoes"] },
     { sort: "asc", page: 1 },
   );
-  safeRoute("/", { page: 1, hoge: "" });
+  safeRoute("/", { hoge: ''});
   safeRoute("/users/[user-id]/", { userId: 1 });
   safeRoute("/shop/", { isRequired: true });
-  safeRoute("/login/");
+  safeRoute('/login/');
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { RouteFunctionDefinition } from "../generator/createRouteFunction";
+import { RouteFunctionDefinition } from "../types";
 import { createRouteDefinition } from "./routes/createRouteDefinition";
 import { createRoutePaths } from "./routes/createRoutePaths";
 import { createSafeRoute } from "./routes/createSafeRoute";
