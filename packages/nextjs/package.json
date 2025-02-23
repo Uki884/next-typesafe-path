@@ -2,7 +2,8 @@
   "name": "@safe-routes/nextjs",
   "version": "0.0.4",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "private": false,
   "type": "module",
