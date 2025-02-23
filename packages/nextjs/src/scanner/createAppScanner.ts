@@ -43,7 +43,7 @@ export function createAppScanner({ inputDir, outDir }: { inputDir: string, outDi
           searchParamsType,
         });
       } else {
-        // ルートグループの処理
+        // handle route group
         if (isRouteGroup(item)) {
           routes.push(
             ...(await scan({

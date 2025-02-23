@@ -28,7 +28,7 @@ export const parseRouteSegment = ({
   segment: string;
   parentSegment?: string;
 }): RouteSegment | null => {
-  // ルートグループを無視
+  // ignore route group
   if (isRouteGroup(segment)) {
     return null;
   }
@@ -45,10 +45,10 @@ export const parseRouteSegment = ({
     };
   }
 
-  // パラメータ名を抽出
+  // extract parameter name
   let paramName = dynamicType ? getParamName(segment) : segment;
 
-  // kebab-caseの場合はcamelCaseに変換
+  // convert kebab-case to camelCase
   paramName = isKebabCase(paramName) ? toCamelCase(paramName) : paramName;
 
   return {

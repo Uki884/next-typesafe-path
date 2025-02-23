@@ -19,11 +19,11 @@ export async function generateTypes(options: Options) {
     const pagesRoutes = await pagesScanner();
     const allRoutes = [...appRoutes, ...pagesRoutes];
 
-    // .d.tsファイルの生成
+    // generate dts file
     const dtsContent = createFileContent(allRoutes, "dts");
     await writeToFile(dtsContent, `${options.outDir}/index.d.ts`);
 
-    // .jsファイルの生成
+    // generate js file
     const jsContent = createFileContent(allRoutes, "js");
     await writeToFile(jsContent, `${options.outDir}/index.js`);
   } catch (error) {

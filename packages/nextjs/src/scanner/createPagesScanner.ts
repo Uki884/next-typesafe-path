@@ -25,7 +25,7 @@ export function createPagesScanner({ inputDir, outDir }: { inputDir: string, out
     const routes: RouteFunctionDefinition[] = [];
 
     for (const item of items) {
-      // 特殊ファイルをスキップ
+      // skip special files
       if (isIgnoreRoute(item)) {
         continue;
       }
@@ -34,7 +34,7 @@ export function createPagesScanner({ inputDir, outDir }: { inputDir: string, out
       const stats = await stat(fullPath);
 
       if (stats.isDirectory()) {
-        // ディレクトリの処理
+        // handle directory
         const segment = parseRouteSegment({
           segment: item,
           parentSegment: getStaticParentPath(parentSegments),
@@ -49,7 +49,7 @@ export function createPagesScanner({ inputDir, outDir }: { inputDir: string, out
           );
         }
       } else {
-        // ファイルの処理
+        // handle file
         if (item.endsWith(".tsx") || item.endsWith(".ts")) {
           const isIndex = item === "index.tsx" || item === "index.ts";
           const segment = parseRouteSegment({

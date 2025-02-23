@@ -4,7 +4,7 @@ export const generateSearchParamsType = (
   fullPath: string,
   outDir: string
 ): string => {
-  // outDirからtargetFileまでの相対パスを計算
+  // calculate relative path from outDir to targetFile
   const importPath = path.relative(outDir, fullPath).replace(/\\/g, "/");
 
   return `import("${importPath}").SearchParams`;

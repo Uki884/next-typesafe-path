@@ -10,13 +10,13 @@ export const withDuplicateParamSuffix = (segments: RouteSegment[]) => {
       return segment;
     }
 
-    // 初めて出現した場合はそのまま返す
+    // if the parameter appears for the first time, return it as is
     if (!paramCount[paramName]) {
       paramCount[paramName] = 1;
       return segment;
     }
 
-    // 2回目以降の出現の場合、連番を付与
+    // if the parameter appears for the second time or more, add a sequential number
     paramCount[paramName]++;
     return {
       ...segment,

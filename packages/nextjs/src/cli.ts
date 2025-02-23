@@ -29,14 +29,13 @@ program
     }
 
     const outDir = path.resolve(process.cwd(), options.outDir || "node_modules/.safe-routes");
-    // 初回生成
+
     await generateTypes({
       appDir: appDir || "",
       pagesDir: pagesDir || "",
       outDir,
     });
 
-    // ウォッチモード
     if (options.watch) {
       const targetDirs = [appDir, pagesDir].filter((dir) => dir !== null);
 
