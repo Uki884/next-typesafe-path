@@ -1,5 +1,5 @@
 export type SearchParams = {
-  redirect?: string;
+  redirect: string;
 };
 
 export default function LoginPage() {
