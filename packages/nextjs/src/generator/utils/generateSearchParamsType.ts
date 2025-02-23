@@ -1,11 +1,11 @@
 import path from "path";
 
-export const generateSearchParamsType = (fullPath: string): string => {
-  const relativePath = path
-    .relative(process.cwd(), fullPath)
-    .replace(/\\/g, "/");
-
-  const importPath = `../../${relativePath}`;
+export const generateSearchParamsType = (
+  fullPath: string,
+  outDir: string
+): string => {
+  // outDirからtargetFileまでの相対パスを計算
+  const importPath = path.relative(outDir, fullPath).replace(/\\/g, "/");
 
   return `import("${importPath}").SearchParams`;
 };

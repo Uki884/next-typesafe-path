@@ -1,1 +1,1 @@
-export type { DynamicRouteType, RouteSegment } from "./route";
+export type { DynamicRouteType, RouteFunctionDefinition, RouteSegment } from "./route";

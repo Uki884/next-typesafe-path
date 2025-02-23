@@ -1,3 +1,3 @@
 module.exports = {
-  ...require("./.safe-routes/index.js"),
+  ...require(".safe-routes/index.js"),
 };

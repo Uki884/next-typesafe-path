@@ -1,11 +1,10 @@
 import path from "path";
 import { readdir, stat } from "fs/promises";
-import { RouteFunctionDefinition } from "../generator/createRouteFunction";
-import { createRouteFunction } from "../generator/createRouteFunction";
-import { RouteSegment } from "../types";
+import { RouteFunctionDefinition, RouteSegment } from "../types";
 import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
 import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
+import { generateSearchParamsType } from "../generator/utils/generateSearchParamsType";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
   return segments
@@ -14,9 +13,9 @@ function getStaticParentPath(segments: RouteSegment[]): string | undefined {
     .join("/");
 }
 
-export function createPagesScanner(pagesDir: string) {
+export function createPagesScanner({ inputDir, outDir }: { inputDir: string, outDir: string }) {
   async function scan({
-    currentPath = pagesDir,
+    currentPath = inputDir,
     parentSegments = [],
   }: {
     currentPath?: string;
@@ -66,13 +65,11 @@ export function createPagesScanner(pagesDir: string) {
             const segments = isIndex
               ? parentSegments
               : [...parentSegments, segment];
-
-            routes.push(
-              createRouteFunction({
-                fullPath,
-                segments: withDuplicateParamSuffix(segments),
-              }),
-            );
+            const searchParamsType = generateSearchParamsType(fullPath, outDir);
+            routes.push({
+              routeSegments: withDuplicateParamSuffix(segments),
+              searchParamsType,
+            });
           }
         }
       }
