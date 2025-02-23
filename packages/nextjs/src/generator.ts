@@ -15,8 +15,9 @@ export async function generateTypes(options: Options) {
     await fs.mkdir(options.outDir, { recursive: true });
     const appScanner = createAppScanner({ inputDir: options.appDir, outDir: options.outDir });
     const pagesScanner = createPagesScanner({ inputDir: options.pagesDir, outDir: options.outDir });
-    const appRoutes = await appScanner();
-    const pagesRoutes = await pagesScanner();
+
+    const appRoutes = appScanner ? await appScanner() : [];
+    const pagesRoutes = pagesScanner ? await pagesScanner() : [];
     const allRoutes = [...appRoutes, ...pagesRoutes];
 
     // generate dts file

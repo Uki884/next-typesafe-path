@@ -15,7 +15,11 @@ function getStaticParentPath(segments: RouteSegment[]): string | undefined {
     .join("/");
 }
 
-export function createAppScanner({ inputDir, outDir }: { inputDir: string, outDir: string }) {
+export function createAppScanner({ inputDir, outDir }: { inputDir?: string, outDir: string }) {
+  if (!inputDir) {
+    return undefined;
+  }
+
   return async function scan({
     currentPath = inputDir,
     parentSegments = [],

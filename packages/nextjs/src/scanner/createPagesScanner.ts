@@ -13,8 +13,12 @@ function getStaticParentPath(segments: RouteSegment[]): string | undefined {
     .join("/");
 }
 
-export function createPagesScanner({ inputDir, outDir }: { inputDir: string, outDir: string }) {
-  async function scan({
+export function createPagesScanner({ inputDir, outDir }: { inputDir?: string, outDir: string }) {
+  if (!inputDir) {
+    return undefined;
+  }
+
+  return async function scan({
     currentPath = inputDir,
     parentSegments = [],
   }: {
@@ -77,6 +81,4 @@ export function createPagesScanner({ inputDir, outDir }: { inputDir: string, out
 
     return routes;
   }
-
-  return scan;
 }

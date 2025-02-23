@@ -12,6 +12,7 @@ program
   .option("-w, --watch", "Watch for file changes")
   .option("-o, --out-dir <path>", "Output directory")
   .action(async (options) => {
+
     const findDirectory = (baseName: string): string | null => {
       const rootPath = path.resolve(process.cwd(), baseName);
       const srcPath = path.resolve(process.cwd(), "src", baseName);
@@ -37,7 +38,7 @@ program
     });
 
     if (options.watch) {
-      const targetDirs = [appDir, pagesDir].filter((dir) => dir !== null);
+      const targetDirs = [appDir, pagesDir].filter((dir) => dir);
 
       const watcher = chokidar.watch(targetDirs, {
         ignored: /(^|[\/\\])\../,
