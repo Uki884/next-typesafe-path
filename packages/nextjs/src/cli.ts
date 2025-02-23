@@ -2,6 +2,7 @@
 
 import path from "path";
 import chokidar from "chokidar";
+import { existsSync } from 'node:fs';
 import { program } from "commander";
 import { generateTypes } from "./generator";
 
@@ -11,20 +12,35 @@ program
   .option("-w, --watch", "Watch for file changes")
   .option("-o, --out-dir <path>", "Output directory")
   .action(async (options) => {
-    const appDir = path.resolve(process.cwd(), "app");
-    const pagesDir = path.resolve(process.cwd(), "pages");
-    const outDir = path.resolve(process.cwd(), options.outDir || "node_modules/.safe-routes");
+    const findDirectory = (baseName: string): string | null => {
+      const rootPath = path.resolve(process.cwd(), baseName);
+      const srcPath = path.resolve(process.cwd(), "src", baseName);
+      if (existsSync(rootPath)) return rootPath;
+      if (existsSync(srcPath)) return srcPath;
+      return null;
+    };
 
+    const appDir = findDirectory("app") || "";
+    const pagesDir = findDirectory("pages") || "";
+
+    if (!appDir && !pagesDir) {
+      console.error("Error: Neither 'app' nor 'pages' directory found in root or src directory");
+      process.exit(1);
+    }
+
+    const outDir = path.resolve(process.cwd(), options.outDir || "node_modules/.safe-routes");
     // 初回生成
     await generateTypes({
-      appDir,
-      pagesDir,
+      appDir: appDir || "",
+      pagesDir: pagesDir || "",
       outDir,
     });
 
     // ウォッチモード
     if (options.watch) {
-      const watcher = chokidar.watch([appDir, pagesDir], {
+      const targetDirs = [appDir, pagesDir].filter((dir) => dir !== null);
+
+      const watcher = chokidar.watch(targetDirs, {
         ignored: /(^|[\/\\])\../,
         persistent: true,
         ignoreInitial: true,
