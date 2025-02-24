@@ -11,10 +11,22 @@ export const convertPathToParamFormat = (segments: RouteSegment[]) => {
 };
 
 export const createRoutePaths = (routes: RouteFunctionDefinition[]) => {
-  return routes
+  return `${routes
     .map((route) => {
-      const path = convertPathToParamFormat(route.routeSegments);
-      return path ? `"/${path}/"` : `"/"`;
+      const path = route.routeSegments.length === 0
+        ? "/"
+        : `/${convertPathToParamFormat(route.routeSegments)}/`;
+
+      if (route.routeSegments.some((s) => s.dynamicType === "optional-catch-all")) {
+        const basePath = `/${route.routeSegments
+          .filter(s => s.dynamicType !== "optional-catch-all")
+          .map(s => s.rawParamName)
+          .join("/")}/`;
+
+        return `"${path}" | "${basePath}"`;
+      }
+
+      return `"${path}"`;
     })
-    .join(" | ");
+    .join(" | ")};`;
 };

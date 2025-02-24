@@ -3,4 +3,5 @@ export type SearchParams = {
   isRequired: boolean;
   tags: string[];
 };
-export default function ShopPage() {} 
+
+export default function ShopPage() {}

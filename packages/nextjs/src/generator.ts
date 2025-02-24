@@ -20,7 +20,7 @@ export async function generateTypes(options: Options) {
     const pagesRoutes = pagesScanner ? await pagesScanner() : [];
     const allRoutes = [...appRoutes, ...pagesRoutes];
 
-    // TypeScriptソースファイルの生成
+    // generate TypeScript source file
     const content = createFileContent(allRoutes);
     await writeToFile(content, `${options.outDir}/index.ts`);
   } catch (error) {
