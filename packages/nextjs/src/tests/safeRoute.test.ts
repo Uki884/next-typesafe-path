@@ -1,21 +1,7 @@
-import { describe, test, expect, beforeAll } from 'vitest';
-import { generateTypes } from '../generator';
-import path from 'path';
+import { describe, test, expect } from 'vitest';
+import { safeRoute } from '../tests/.safe-routes/index';
 
 describe('safeRoute', () => {
-  let safeRoute: (path: string, params?: Record<string, unknown>, searchParams?: Record<string, unknown>) => string;
-
-  beforeAll(async () => {
-    const outDir = path.join(__dirname, '.safe-routes');
-    await generateTypes({
-      appDir: path.join(__dirname, '../fixtures/app'),
-      pagesDir: '',
-      outDir
-    });
-    const { safeRoute: generatedSafeRoute } = await import(path.join(outDir, 'index.js'));
-    safeRoute = generatedSafeRoute;
-  });
-
   // Case 1: No params, no search params
   test('static route without params', () => {
     expect(safeRoute('/')).toBe('/');

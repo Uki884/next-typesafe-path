@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { safeRoute } from "@safe-routes/nextjs";
 
+export type SearchParams = {
+  page: number;
+  sort?: "asc" | "desc";
+};
+
 export default function HomePage() {
   const userId = safeRoute(
     "/users/[user-id]/",
@@ -9,9 +14,11 @@ export default function HomePage() {
   );
   safeRoute(
     "/products/[[...filters]]/",
-    {},
+    { filters: ["sort", "page"] },
+    { sort: 'asc', page: 1}
   );
-  safeRoute("/");
+  safeRoute('/products/', { sort: 'asc', page: 1});
+  safeRoute('/', { page: 1});
   safeRoute("/users/[user-id]/", { userId: 1 }, { page: 1});
   safeRoute("/shop/", { isRequired: true, isOptional: 1 });
   safeRoute('/login/', { redirect: "https://example.com" });
@@ -35,9 +42,8 @@ export default function HomePage() {
         <li>
           <Link
             href={safeRoute(
-              "/products/[[...filters]]/",
-              {},
-              { page: 1 }
+              "/products/",
+              { sort: "asc", page: 1 }
             )}
           >
             Optional Catch-all

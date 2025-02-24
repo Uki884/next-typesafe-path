@@ -15,13 +15,6 @@ const buildSearchParams = (params?: SearchParams): string => {
     }
   };
 
-  // Override URLSearchParams toString to use %20 instead of + for spaces
-  searchParams.toString = function() {
-    return Array.from<[string, string]>(this.entries())
-      .map(([key, value]) => \`\${encodeURIComponent(key)}=\${encodeURIComponent(value)}\`)
-      .join('&');
-  };
-
   for (const [key, values] of Object.entries(params)) {
     if (Array.isArray(values)) {
       const uniqueValues = Array.from(new Set([...values]));

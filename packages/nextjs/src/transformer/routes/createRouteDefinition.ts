@@ -9,14 +9,37 @@ export const createRouteDefinition = (
       ? `"/"`
       : `"/${convertPathToParamFormat(route.routeSegments)}/"`;
 
+  // オプショナルキャッチオールルートの場合、ベースパスも追加
+  const hasOptionalCatchAll = route.routeSegments.some(
+    (s) => s.dynamicType === "optional-catch-all"
+  );
+
+  if (hasOptionalCatchAll) {
+    const basePath = `"/${route.routeSegments
+      .filter(s => s.dynamicType !== "optional-catch-all")
+      .map(s => s.rawParamName)
+      .join("/")}/"`;
+
+    return `${basePath}: {
+  params: {} as Record<string, never>,
+  // @ts-ignore
+  searchParams: {} as ${route.searchParamsType}
+},
+${path}: {
+  params: {} as ${createParamsType(route, true)},
+  // @ts-ignore
+  searchParams: {} as ${route.searchParamsType}
+}`;
+}
+
   return `${path}: {
-    params: {} as ${createParamsType(route)},
-    // @ts-ignore
-    searchParams: {} as ${route.searchParamsType}
-  }`;
+  params: {} as ${createParamsType(route)},
+  // @ts-ignore
+  searchParams: {} as ${route.searchParamsType}
+}`;
 };
 
-const createParamsType = (route: RouteFunctionDefinition) => {
+const createParamsType = (route: RouteFunctionDefinition, makeRequired = false) => {
   if (!route.routeSegments.some((s) => s.isDynamic)) {
     return "Record<string, never>";
   }
@@ -28,7 +51,9 @@ const createParamsType = (route: RouteFunctionDefinition) => {
         case "catch-all":
           return `${s.paramName}: string[] | number[]`;
         case "optional-catch-all":
-          return `${s.paramName}?: string[] | number[]`;
+          return makeRequired
+            ? `${s.paramName}: string[] | number[]`
+            : `${s.paramName}?: string[] | number[]`;
         default:
           return `${s.paramName}: string | number`;
       }
