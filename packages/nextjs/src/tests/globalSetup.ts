@@ -1,10 +1,9 @@
 import { generateTypes } from '../generator';
-import { beforeAll } from 'vitest';
 
-beforeAll(async () => {
+export const setup = async () => {
   await generateTypes({
     appDir: 'src/fixtures/app',
     pagesDir: '',
     outDir: 'src/tests/.safe-routes'
   });
-});
+};
