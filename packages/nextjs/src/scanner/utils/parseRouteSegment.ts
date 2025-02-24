@@ -6,19 +6,16 @@ import { isRouteGroup } from "./isRouteGroup";
 
 const getParamName = (segment: string) => {
   const dynamicType = isDynamicRoute(segment);
-  let paramName = segment;
   switch (dynamicType) {
     case "catch-all":
-      paramName = segment.replace(/\[\.\.\.(.+)\]/, "$1");
-      break;
+      return segment.replace(/\[\.\.\.(.+)\]/, "$1");
     case "optional-catch-all":
-      paramName = segment.replace(/\[\[\.\.\.(.+)\]\]/, "$1");
-      break;
+      return segment.replace(/\[\[\.\.\.(.+)\]\]/, "$1");
     case "dynamic":
-      paramName = segment.replace(/\[(.+)\]/, "$1");
-      break;
+      return segment.replace(/\[(.+)\]/, "$1");
+    default:
+      return segment;
   }
-  return paramName;
 };
 
 export const parseRouteSegment = ({
@@ -48,8 +45,8 @@ export const parseRouteSegment = ({
   // extract parameter name
   let paramName = dynamicType ? getParamName(segment) : segment;
 
-  // convert kebab-case to camelCase
-  paramName = isKebabCase(paramName) ? toCamelCase(paramName) : paramName;
+  // convert to camelCase
+  paramName = toCamelCase(paramName);
 
   return {
     rawParamName: segment,

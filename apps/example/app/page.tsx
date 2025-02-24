@@ -15,7 +15,7 @@ export default function HomePage() {
   safeRoute(
     "/products/[[...filters]]/",
     { filters: ["sort", "page"] },
-    { sort: 'asc', page: 1}
+    { sort: 'asc', page: 1},
   );
   safeRoute('/products/', { sort: 'asc', page: 1});
   safeRoute('/', { page: 1});

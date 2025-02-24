@@ -97,4 +97,10 @@ describe('safeRoute', () => {
     expect(safeRoute('/users/[user-id]/', { userId: '123' }))
       .toBe('/users/123/');
   });
+
+  // Case 9: Snake case conversion
+  test('converts snake case to camel case in params', () => {
+    expect(safeRoute('/users/[user_id]/', { userId: 1}))
+      .toBe('/users/1/');
+  });
 });
