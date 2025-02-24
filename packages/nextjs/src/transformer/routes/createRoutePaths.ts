@@ -17,7 +17,6 @@ export const createRoutePaths = (routes: RouteFunctionDefinition[]) => {
         ? "/"
         : `/${convertPathToParamFormat(route.routeSegments)}/`;
 
-      // オプショナルキャッチオールルートの場合、ベースパスも追加
       if (route.routeSegments.some((s) => s.dynamicType === "optional-catch-all")) {
         const basePath = `/${route.routeSegments
           .filter(s => s.dynamicType !== "optional-catch-all")

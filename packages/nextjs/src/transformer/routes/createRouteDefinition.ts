@@ -9,7 +9,6 @@ export const createRouteDefinition = (
       ? `"/"`
       : `"/${convertPathToParamFormat(route.routeSegments)}/"`;
 
-  // オプショナルキャッチオールルートの場合、ベースパスも追加
   const hasOptionalCatchAll = route.routeSegments.some(
     (s) => s.dynamicType === "optional-catch-all"
   );
