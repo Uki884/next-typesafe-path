@@ -31,6 +31,8 @@ npm install @safe-routes/nextjs --save-dev
 yarn add @safe-routes/nextjs --dev
 # or
 pnpm add @safe-routes/nextjs --dev
+# or
+npx @safe-routes/nextjs --no-trailing-slash
 ```
 
 ## Setup
