@@ -149,7 +149,7 @@ safeRoute(
 );  // => /shop/men/shoes/
 
 // Optional catch-all
-safeRoute('/products/[[...filters]]/', {});  // => /products/
+safeRoute('/products/');  // => /products/
 safeRoute(
   '/products/[[...filters]]/',
   { filters: ['sale', 'winter'] }
