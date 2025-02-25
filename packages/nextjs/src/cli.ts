@@ -62,7 +62,6 @@ program
 
       watcher
         .on("all", async () => {
-          console.log("Generating types... by @safe-routes/nextjs");
           await generateTypes({ appDir, pagesDir, config: { trailingSlash, outDir } })
         })
     }
