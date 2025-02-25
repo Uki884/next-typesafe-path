@@ -3,7 +3,6 @@ import { readdir, stat } from "fs/promises";
 import { RouteFunctionDefinition, RouteSegment } from "../types";
 import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
-import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
 import { generateSearchParamsType } from "../generator/generateSearchParamsType";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
@@ -71,7 +70,7 @@ export function createPagesScanner({ inputDir, outDir }: { inputDir?: string, ou
               : [...parentSegments, segment];
             const searchParamsType = generateSearchParamsType(fullPath, outDir);
             routes.push({
-              routeSegments: withDuplicateParamSuffix(segments),
+              routeSegments: segments,
               searchParamsType,
             });
           }

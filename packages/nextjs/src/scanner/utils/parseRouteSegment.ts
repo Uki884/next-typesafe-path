@@ -1,5 +1,5 @@
 import { RouteSegment } from "../../types";
-import { isKebabCase, toCamelCase } from "../../utils";
+import { toCamelCase } from "../../utils";
 import { isDynamicRoute } from "./isDynamicRoute";
 import { isPage } from "./isPage";
 import { isRouteGroup } from "./isRouteGroup";
@@ -43,14 +43,11 @@ export const parseRouteSegment = ({
   }
 
   // extract parameter name
-  let paramName = dynamicType ? getParamName(segment) : segment;
-
-  // convert to camelCase
-  paramName = toCamelCase(paramName);
+  const paramName = dynamicType ? getParamName(segment) : segment;
 
   return {
     rawParamName: segment,
-    paramName,
+    paramName: toCamelCase(paramName),
     isDynamic: true,
     dynamicType,
     isPage: isPage(segment),
