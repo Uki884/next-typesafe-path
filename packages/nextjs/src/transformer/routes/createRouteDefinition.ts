@@ -1,13 +1,16 @@
-import { RouteFunctionDefinition } from "../../types";
+import { FileContentOption, RouteFunctionDefinition } from "../../types";
 import { convertPathToParamFormat } from "./createRoutePaths";
 
-export const createRouteDefinition = (
-  route: RouteFunctionDefinition,
-) => {
+type CreateRouteDefinitionOption = {
+  route: RouteFunctionDefinition;
+  config: FileContentOption["config"];
+};
+
+export const createRouteDefinition = ({ route, config }: CreateRouteDefinitionOption) => {
   const path =
     route.routeSegments.length === 0
       ? `"/"`
-      : `"/${convertPathToParamFormat(route.routeSegments)}/"`;
+      : `"/${convertPathToParamFormat(route.routeSegments)}${config.trailingSlash ? "/" : ""}"`;
 
   const hasOptionalCatchAll = route.routeSegments.some(
     (s) => s.dynamicType === "optional-catch-all"
@@ -17,7 +20,7 @@ export const createRouteDefinition = (
     const basePath = `"/${route.routeSegments
       .filter(s => s.dynamicType !== "optional-catch-all")
       .map(s => s.rawParamName)
-      .join("/")}/"`;
+      .join("/")}${config.trailingSlash ? "/" : ""}"`;
 
     return `${basePath}: {
   params: {} as Record<string, never>,

@@ -1,11 +1,11 @@
-import { RouteFunctionDefinition } from "../types";
+import { FileContentOption } from "../types";
 import { createRouteDefinition } from "./routes/createRouteDefinition";
 import { createRoutePaths } from "./routes/createRoutePaths";
 import { createSafeRoute } from "./routes/createSafeRoute";
 
-export const transformFunctionExports = (routes: RouteFunctionDefinition[]) => {
-  const routePaths = createRoutePaths(routes);
-  const routeDefinitions = routes.map((route) => createRouteDefinition(route));
+export const transformFunctionExports = (options: FileContentOption) => {
+  const routePaths = createRoutePaths(options);
+  const routeDefinitions = options.routes.map((route) => createRouteDefinition({ route, config: options.config }));
   const safeRoute = createSafeRoute();
 
   return `

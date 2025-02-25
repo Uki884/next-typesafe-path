@@ -5,13 +5,15 @@ import chokidar from "chokidar";
 import { existsSync } from 'node:fs';
 import { program } from "commander";
 import { generateTypes } from "./generator";
+import { UserConfig } from "./types";
 
 program
   .name("safe-routes")
   .description("Generate type-safe routes for Next.js")
   .option("-w, --watch", "Watch for file changes and regenerate types")
   .option("-o, --out-dir <path>", "Output directory (default: .safe-routes)")
-  .action(async (options) => {
+  .option("--no-trailing-slash", "Disable trailing slash in generated routes (default: true)")
+  .action(async (options: UserConfig) => {
 
     const findDirectory = (baseName: string): string | null => {
       const rootPath = path.resolve(process.cwd(), baseName);
@@ -23,6 +25,7 @@ program
 
     const appDir = findDirectory("app") || "";
     const pagesDir = findDirectory("pages") || "";
+    const trailingSlash = !options.trailingSlash;
 
     if (!appDir && !pagesDir) {
       console.error("Error: Neither 'app' nor 'pages' directory found in root or src directory");
@@ -31,11 +34,18 @@ program
 
     const outDir = path.resolve(process.cwd(), options.outDir || ".safe-routes");
 
-    await generateTypes({
-      appDir: appDir || "",
-      pagesDir: pagesDir || "",
-      outDir,
-    });
+    const generate = async () => {
+      return await generateTypes({
+        appDir: appDir || "",
+        pagesDir: pagesDir || "",
+        config: {
+          trailingSlash,
+          outDir,
+        },
+      });
+    };
+
+    await generate();
 
     if (options.watch) {
       const targetDirs = [appDir, pagesDir].filter((dir) => dir);
@@ -51,11 +61,10 @@ program
       });
 
       watcher
-        .on("add", () => generateTypes({ appDir, pagesDir, outDir }))
-        .on("unlink", () => generateTypes({ appDir, pagesDir, outDir }))
-        .on("addDir", () => generateTypes({ appDir, pagesDir, outDir }))
-        .on("unlinkDir", () => generateTypes({ appDir, pagesDir, outDir }))
-        .on("change", () => generateTypes({ appDir, pagesDir, outDir }));
+        .on("all", async () => {
+          console.log("Generating types... by @safe-routes/nextjs");
+          await generateTypes({ appDir, pagesDir, config: { trailingSlash, outDir } })
+        })
     }
   });
 
