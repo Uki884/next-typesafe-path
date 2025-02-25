@@ -12,7 +12,7 @@ program
   .description("Generate type-safe routes for Next.js")
   .option("-w, --watch", "Watch for file changes and regenerate types")
   .option("-o, --out-dir <path>", "Output directory (default: .safe-routes)")
-  .option("--no-trailing-slash", "Disable trailing slash in generated routes (default: true)")
+  .option("--no-trailing-slash", "Disable trailing slash in generated routes")
   .action(async (options: UserConfig) => {
 
     const findDirectory = (baseName: string): string | null => {
