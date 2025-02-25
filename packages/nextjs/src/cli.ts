@@ -25,7 +25,7 @@ program
 
     const appDir = findDirectory("app") || "";
     const pagesDir = findDirectory("pages") || "";
-    const trailingSlash = !options.trailingSlash;
+    const trailingSlash = !!options.trailingSlash;
 
     if (!appDir && !pagesDir) {
       console.error("Error: Neither 'app' nor 'pages' directory found in root or src directory");
