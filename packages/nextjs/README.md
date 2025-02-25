@@ -10,7 +10,6 @@ Zero-dependency type-safe routing utilities that work seamlessly with Next.js Ap
   - Dynamic routes ([id])
   - Catch-all routes ([...slug])
   - Optional catch-all routes ([[...name]])
-  - Route groups ((auth))
   - SearchParams type inference
 - Pages Router support
   - Dynamic routes
@@ -107,6 +106,33 @@ safeRoute(path, params, searchParams?)
 safeRoute(path, searchParams?)
 ```
 
+### Search Parameters Behavior
+
+The `searchParams` argument becomes optional when:
+- The `SearchParams` type is not defined in the page component
+- All properties in `SearchParams` are optional
+
+```typescript
+// Case 1: All optional properties - searchParams is optional
+export type SearchParams = {
+  lang?: string;
+  page?: number;
+};
+safeRoute('/about/');  // OK
+safeRoute('/about/', { lang: 'en' });  // OK
+
+// Case 2: Has required properties - searchParams is required
+export type SearchParams = {
+  lang: string;    // required
+  page?: number;   // optional
+};
+safeRoute('/about/');  // Error: searchParams is required
+safeRoute('/about/', { lang: 'en' });  // OK
+
+// Case 3: No SearchParams type - searchParams is optional
+safeRoute('/about/');  // OK
+```
+
 ### Examples
 
 1. Static Routes (no parameters):
@@ -148,12 +174,19 @@ safeRoute(
   { categories: ['men', 'shoes'] }
 );  // => /shop/men/shoes/
 
-// Optional catch-all
-safeRoute('/products/[[...filters]]/', {});  // => /products/
+// Optional catch-all routes are split into two patterns:
+// Pattern 1: Base route without parameters
+safeRoute('/products/');  // => /products/
+
+// Pattern 2: Route with optional catch-all
+// Note: When using this pattern, params are required
 safeRoute(
   '/products/[[...filters]]/',
   { filters: ['sale', 'winter'] }
 );  // => /products/sale/winter/
+
+// This will cause a type error:
+safeRoute('/products/[[...filters]]/');  // Error: params are required when specified
 ```
 
 4. Route Groups:

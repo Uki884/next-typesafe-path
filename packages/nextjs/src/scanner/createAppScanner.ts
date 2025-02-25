@@ -5,7 +5,6 @@ import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { isPage } from "./utils/isPage";
 import { isRouteGroup } from "./utils/isRouteGroup";
 import { parseRouteSegment } from "./utils/parseRouteSegment";
-import { withDuplicateParamSuffix } from "./utils/withDuplicateParamSuffix";
 import { generateSearchParamsType } from "../generator/generateSearchParamsType";
 
 function getStaticParentPath(segments: RouteSegment[]): string | undefined {
@@ -43,7 +42,7 @@ export function createAppScanner({ inputDir, outDir }: { inputDir?: string, outD
         const segments = parentSegments.filter(Boolean);
         const searchParamsType = generateSearchParamsType(fullPath, outDir);
         routes.push({
-          routeSegments: withDuplicateParamSuffix(segments),
+          routeSegments: segments,
           searchParamsType,
         });
       } else {
