@@ -29,16 +29,16 @@ const buildSearchParams = (params?: SearchParams): string => {
   return `?${searchParams.toString()}`;
 };
 
-export type SafeRoutePath = "/login/" | "/about/" | "/blog/[slug]/" | "/" | "/products/[[...filters]]/" | "/products/" | "/search/" | "/shop/[...categories]/" | "/shop/" | "/users/[id]/" | "/users/[user-id]/" | "/users/[userId]/posts/[postId]/" | "/users/[user_id]/";;
+export type SafeRoutePath = "/login" | "/about" | "/blog/[slug]" | "/" | "/products/[[...filters]]" | "/products" | "/search" | "/shop/[...categories]" | "/shop" | "/users/[id]" | "/users/[user-id]" | "/users/[userId]/posts/[postId]" | "/users/[user_id]";;
 
 export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
 export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
+export type SafeRoutes = typeof safeRoutes;
 
 type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
-type HasSearchParams<T> = T extends { searchParams: undefined, params: Record<string, never> } ? false : IsAllOptional<T> extends true ? false : true;
-type HasParams<T> = T extends Record<string, never> ? false : true;
-
-export type SafeRoutes = typeof safeRoutes;
+type HasSearchParams<T> = T extends { searchParams: undefined } ? false : IsAllOptional<T> extends true ? false : true;
+type HasParams<T> = T extends Record<string, never> ? false : true
+type PickSearchParams<T extends SafeRoutePath> = Pick<typeof safeRoutes[T], 'searchParams'>;
 
 type RouteParameters<T extends SafeRoutePath> = {
   RequiredBoth: [params: SafeRouteParams<T>, searchParams: SafeRouteSearchParams<T>];
@@ -50,14 +50,14 @@ type RouteParameters<T extends SafeRoutePath> = {
 };
 
 type SafeRouteArgs<T extends SafeRoutePath> =
-  HasParams<typeof safeRoutes[T]['params']> extends true
-    ? HasSearchParams<typeof safeRoutes[T]> extends true
-      ? IsAllOptional<typeof safeRoutes[T]['searchParams']> extends true
+  HasParams<SafeRouteParams<T>> extends true
+    ? HasSearchParams<PickSearchParams<T>> extends true
+      ? IsAllOptional<typeof safeRoutes[T]> extends true
         ? RouteParameters<T>['RequiredParamsOptionalSearch']
         : RouteParameters<T>['RequiredBoth']
       : RouteParameters<T>['ParamsOnly']
-    : HasSearchParams<typeof safeRoutes[T]> extends true
-      ? IsAllOptional<typeof safeRoutes[T]['searchParams']> extends true
+    : HasSearchParams<PickSearchParams<T>> extends true
+      ? IsAllOptional<typeof safeRoutes[T]> extends true
         ? RouteParameters<T>['OptionalSearchOnly']
         : RouteParameters<T>['SearchOnly']
       : RouteParameters<T>['None'];
@@ -90,17 +90,17 @@ export function safeRoute<T extends SafeRoutePath>(
 }
 
 export const safeRoutes = {
-"/login/": {
+"/login": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/(auth)/login/page.tsx").SearchParams
 },
-"/about/": {
+"/about": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/about/page.tsx").SearchParams
 },
-"/blog/[slug]/": {
+"/blog/[slug]": {
   params: {} as { slug: string | number },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/blog/[slug]/page.tsx").SearchParams
@@ -110,47 +110,47 @@ export const safeRoutes = {
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/page.tsx").SearchParams
 },
-"/products/": {
+"/products": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/products/[[...filters]]/page.tsx").SearchParams
 },
-"/products/[[...filters]]/": {
+"/products/[[...filters]]": {
   params: {} as { filters: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/products/[[...filters]]/page.tsx").SearchParams
 },
-"/search/": {
+"/search": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/search/page.tsx").SearchParams
 },
-"/shop/[...categories]/": {
+"/shop/[...categories]": {
   params: {} as { categories: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/shop/[...categories]/page.tsx").SearchParams
 },
-"/shop/": {
+"/shop": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/shop/page.tsx").SearchParams
 },
-"/users/[id]/": {
+"/users/[id]": {
   params: {} as { id: string | number },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/users/[id]/page.tsx").SearchParams
 },
-"/users/[user-id]/": {
+"/users/[user-id]": {
   params: {} as { userId: string | number },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/users/[user-id]/page.tsx").SearchParams
 },
-"/users/[userId]/posts/[postId]/": {
+"/users/[userId]/posts/[postId]": {
   params: {} as { userId: string | number, postId: string | number },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/users/[userId]/posts/[postId]/page.tsx").SearchParams
 },
-"/users/[user_id]/": {
+"/users/[user_id]": {
   params: {} as { userId: string | number },
   // @ts-ignore
   searchParams: {} as import("../../fixtures/app/users/[user_id]/page.tsx").SearchParams
