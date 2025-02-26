@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.7
+
+### Patch Changes
+
+- [#29](https://github.com/Uki884/safe-routes/pull/29) [`2160f40`](https://github.com/Uki884/safe-routes/commit/2160f404f7ab8679ca7979f6720001e694922c36) Thanks [@Uki884](https://github.com/Uki884)! - feat: add trailing slash configuration option for route generation
+
 ## 0.0.6
 
 ### Patch Changes
