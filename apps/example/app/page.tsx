@@ -8,33 +8,32 @@ export type SearchParams = {
 
 export default function HomePage() {
   const userId = safeRoute(
-    "/users/[user-id]/",
+    "/users/[user_id]",
     { userId: 1 },
     { page: 1, sort: "desc" },
   );
   safeRoute(
-    "/products/[[...filters]]/",
+    "/products/[[...filters]]",
     { filters: ["sort", "page"] },
     { sort: 'asc', page: 1},
   );
-  safeRoute('/products/', { sort: 'asc', page: 1});
+  safeRoute('/products', { sort: 'asc', page: 1});
   safeRoute('/', { page: 1});
-  safeRoute("/users/[user-id]/", { userId: 1 }, { page: 1});
-  safeRoute("/shop/", { isRequired: true, isOptional: 1 });
-  safeRoute('/login/', { redirect: "https://example.com" });
+  safeRoute("/shop", { isRequired: true, isOptional: 1 });
+  safeRoute('/login', { redirect: "https://example.com" });
 
   return (
     <div>
       <h1>Route Examples</h1>
       <ul>
         <li>
-          <Link href={safeRoute("/blog/[slug]/", { slug: "hello" }, { page: 1})}>
+          <Link href={safeRoute("/blog/[slug]", { slug: "hello" }, { page: 1})}>
             Dynamic Route
           </Link>
         </li>
         <li>
           <Link
-            href={safeRoute("/shop/[...categories]/", { categories: ["men", "shoes"] }, { page: 1})}
+            href={safeRoute("/shop/[...categories]", { categories: ["men", "shoes"] }, { page: 1})}
           >
             Catch-all Route
           </Link>
@@ -42,7 +41,7 @@ export default function HomePage() {
         <li>
           <Link
             href={safeRoute(
-              "/products/",
+              "/products",
               { sort: "asc", page: 1 }
             )}
           >
@@ -51,10 +50,7 @@ export default function HomePage() {
         </li>
         <li>
           <Link
-            href={safeRoute("/users/[user-id]/posts/[post-id]/", {
-              userId: "123",
-              postId: "11",
-            }, { page: 1})}
+            href={safeRoute("/users/[user_id]/posts/[post-id]", { userId: "123", postId: "11" }, { page: 1 })}
           >
             Multiple Dynamic Segments
           </Link>

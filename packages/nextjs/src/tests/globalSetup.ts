@@ -4,6 +4,9 @@ export const setup = async () => {
   await generateTypes({
     appDir: 'src/fixtures/app',
     pagesDir: '',
-    outDir: 'src/tests/.safe-routes'
+    options: {
+      outDir: 'src/tests/.safe-routes',
+      trailingSlash: false,
+    }
   });
 };

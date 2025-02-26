@@ -31,6 +31,8 @@ npm install @safe-routes/nextjs --save-dev
 yarn add @safe-routes/nextjs --dev
 # or
 pnpm add @safe-routes/nextjs --dev
+# or
+npx @safe-routes/nextjs
 ```
 
 ## Setup
@@ -82,6 +84,7 @@ Usage: safe-routes [options]
 Options:
   -w, --watch            Watch for file changes and regenerate types
   -o, --out-dir <path>  Output directory (default: .safe-routes)
+  -t, --trailing-slash true | false  Enable trailing slash in generated routes (default: true)
   -h, --help           Display help for command
 ```
 
