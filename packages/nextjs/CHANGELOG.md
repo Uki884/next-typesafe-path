@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.8
+
+### Patch Changes
+
+- [#31](https://github.com/Uki884/safe-routes/pull/31) [`e8dc2f8`](https://github.com/Uki884/safe-routes/commit/e8dc2f8ba1195bc1808f5327d6abd3d07207880b) Thanks [@Uki884](https://github.com/Uki884)! - refactor: standardize safe route paths by removing trailing slashes a…
+
 ## 0.0.7
 
 ### Patch Changes
