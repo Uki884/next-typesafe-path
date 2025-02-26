@@ -33,12 +33,12 @@ export type SafeRoutePath = "/login/" | "/about/" | "/blog/[slug]/" | "/" | "/pr
 
 export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
 export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
+export type SafeRoutes = typeof safeRoutes;
 
 type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
-type HasSearchParams<T> = T extends { searchParams: undefined, params: Record<string, never> } ? false : IsAllOptional<T> extends true ? false : true;
-type HasParams<T> = T extends Record<string, never> ? false : true;
-
-export type SafeRoutes = typeof safeRoutes;
+type HasSearchParams<T> = T extends { searchParams: undefined } ? false : true;
+type HasParams<T> = T extends Record<string, never> ? false : true
+type PickSearchParams<T extends SafeRoutePath> = Pick<typeof safeRoutes[T], 'searchParams'>;
 
 type RouteParameters<T extends SafeRoutePath> = {
   RequiredBoth: [params: SafeRouteParams<T>, searchParams: SafeRouteSearchParams<T>];
@@ -50,14 +50,14 @@ type RouteParameters<T extends SafeRoutePath> = {
 };
 
 type SafeRouteArgs<T extends SafeRoutePath> =
-  HasParams<typeof safeRoutes[T]['params']> extends true
-    ? HasSearchParams<typeof safeRoutes[T]> extends true
-      ? IsAllOptional<typeof safeRoutes[T]['searchParams']> extends true
+  HasParams<SafeRouteParams<T>> extends true
+    ? HasSearchParams<PickSearchParams<T>> extends true
+      ? IsAllOptional<SafeRouteSearchParams<T>> extends true
         ? RouteParameters<T>['RequiredParamsOptionalSearch']
         : RouteParameters<T>['RequiredBoth']
       : RouteParameters<T>['ParamsOnly']
-    : HasSearchParams<typeof safeRoutes[T]> extends true
-      ? IsAllOptional<typeof safeRoutes[T]['searchParams']> extends true
+    : HasSearchParams<PickSearchParams<T>> extends true
+      ? IsAllOptional<SafeRouteSearchParams<T>> extends true
         ? RouteParameters<T>['OptionalSearchOnly']
         : RouteParameters<T>['SearchOnly']
       : RouteParameters<T>['None'];

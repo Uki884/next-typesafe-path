@@ -6,7 +6,7 @@ export const setup = async () => {
     pagesDir: '',
     options: {
       outDir: 'src/tests/.safe-routes',
-      trailingSlash: false,
+      trailingSlash: true,
     }
   });
 };

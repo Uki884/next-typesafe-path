@@ -5,6 +5,6 @@ export type SearchParams = {
 };
 
 export default function AboutPage() {
-  console.log(safeRoute("/about/", { locale: "en" }));
+  console.log(safeRoute("/about", { locale: 'en'}));
   return <h1>About Page</h1>;
 }

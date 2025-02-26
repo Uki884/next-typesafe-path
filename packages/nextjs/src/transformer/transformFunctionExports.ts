@@ -11,8 +11,6 @@ export const transformFunctionExports = ({ routes, options }: FileContentOption)
   return `
 export type SafeRoutePath = ${routePaths};
 
-export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
-export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
 ${safeRoute}
 
 export const safeRoutes = {

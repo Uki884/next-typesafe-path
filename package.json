@@ -7,7 +7,10 @@
     "format": "biome format --apply ./",
     "fix": "biome check --apply ./",
     "version": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test:once",
+    "build": "pnpm -r build"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
