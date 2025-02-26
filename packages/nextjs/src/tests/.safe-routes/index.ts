@@ -62,7 +62,7 @@ type SafeRouteArgs<T extends SafeRoutePath> =
         : RouteParameters<T>['SearchOnly']
       : RouteParameters<T>['None'];
 
-export function safeRoute<T extends keyof typeof safeRoutes>(
+export function safeRoute<T extends SafeRoutePath>(
   path: T,
   ...args: SafeRouteArgs<T>
 ): T {
@@ -156,5 +156,3 @@ export const safeRoutes = {
   searchParams: {} as import("../../fixtures/app/users/[user_id]/page.tsx").SearchParams
 }
 } as const;
-
-safeRoute('/login/')

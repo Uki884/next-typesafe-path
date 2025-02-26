@@ -5,7 +5,7 @@
     "dev": "npm run dev:safe-routes & npm run dev:next",
     "dev:next": "next dev",
     "dev:safe-routes": "safe-routes --watch --trailing-slash false",
-    "build": "safe-routes && next build",
+    "build": "safe-routes --trailing-slash false && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
