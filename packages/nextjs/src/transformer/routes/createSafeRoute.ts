@@ -4,7 +4,7 @@ export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)
 export type SafeRoutes = typeof safeRoutes;
 
 type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
-type HasSearchParams<T> = T extends { searchParams: undefined } ? false : IsAllOptional<T> extends true ? false : true;
+type HasSearchParams<T> = T extends { searchParams: undefined } ? false : true;
 type HasParams<T> = T extends Record<string, never> ? false : true
 type PickSearchParams<T extends SafeRoutePath> = Pick<typeof safeRoutes[T], 'searchParams'>;
 
@@ -20,12 +20,12 @@ type RouteParameters<T extends SafeRoutePath> = {
 type SafeRouteArgs<T extends SafeRoutePath> =
   HasParams<SafeRouteParams<T>> extends true
     ? HasSearchParams<PickSearchParams<T>> extends true
-      ? IsAllOptional<typeof safeRoutes[T]> extends true
+      ? IsAllOptional<SafeRouteSearchParams<T>> extends true
         ? RouteParameters<T>['RequiredParamsOptionalSearch']
         : RouteParameters<T>['RequiredBoth']
       : RouteParameters<T>['ParamsOnly']
     : HasSearchParams<PickSearchParams<T>> extends true
-      ? IsAllOptional<typeof safeRoutes[T]> extends true
+      ? IsAllOptional<SafeRouteSearchParams<T>> extends true
         ? RouteParameters<T>['OptionalSearchOnly']
         : RouteParameters<T>['SearchOnly']
       : RouteParameters<T>['None'];
