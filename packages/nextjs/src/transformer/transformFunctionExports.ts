@@ -3,9 +3,9 @@ import { createRouteDefinition } from "./routes/createRouteDefinition";
 import { createRoutePaths } from "./routes/createRoutePaths";
 import { createSafeRoute } from "./routes/createSafeRoute";
 
-export const transformFunctionExports = (options: FileContentOption) => {
-  const routePaths = createRoutePaths(options);
-  const routeDefinitions = options.routes.map((route) => createRouteDefinition({ route, config: options.config }));
+export const transformFunctionExports = ({ routes, options }: FileContentOption) => {
+  const routePaths = createRoutePaths({ routes, options });
+  const routeDefinitions = routes.map((route) => createRouteDefinition({ route, options }));
   const safeRoute = createSafeRoute();
 
   return `

@@ -4,10 +4,10 @@ export type { DynamicRouteType, RouteFunctionDefinition, RouteSegment } from "./
 
 export type FileContentOption = {
   routes: RouteFunctionDefinition[];
-  config: UserConfig;
+  options: UserOptions;
 };
 
-export type UserConfig = {
+export type UserOptions = {
   trailingSlash: boolean;
   outDir?: string;
   watch?: boolean;

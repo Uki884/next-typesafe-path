@@ -29,7 +29,7 @@ const buildSearchParams = (params?: SearchParams): string => {
   return `?${searchParams.toString()}`;
 };
 
-export type SafeRoutePath = "/login" | "/blog/[slug]/[hoge]" | "/blog/[slug]" | "/" | "/products/[[...filters]]" | "/products" | "/shop/[...categories]" | "/shop" | "/users/[user_id]/[year]/[month]" | "/users/[user_id]" | "/users/[user_id]/posts/[post-id]" | "/about" | "/docs/[...slug]" | "/video/[[...name]]" | "/video" | "/video/[id]";;
+export type SafeRoutePath = "/login/" | "/blog/[slug]/[hoge]/" | "/blog/[slug]/" | "/" | "/products/[[...filters]]/" | "/products/" | "/shop/[...categories]/" | "/shop/" | "/users/[user_id]/[year]/[month]/" | "/users/[user_id]/" | "/users/[user_id]/posts/[post-id]/" | "/about/" | "/docs/[...slug]/" | "/video/[[...name]]/" | "/video/" | "/video/[id]/";;
 
 export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
 export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
@@ -90,17 +90,17 @@ export function safeRoute<T extends SafeRoutePath>(
 }
 
 export const safeRoutes = {
-"/login": {
+"/login/": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../app/(auth)/login/page.tsx").SearchParams
 },
-"/blog/[slug]/[hoge]": {
+"/blog/[slug]/[hoge]/": {
   params: {} as { slug: string | number, hoge: string | number },
   // @ts-ignore
   searchParams: {} as import("../app/blog/[slug]/[hoge]/page.tsx").SearchParams
 },
-"/blog/[slug]": {
+"/blog/[slug]/": {
   params: {} as { slug: string | number },
   // @ts-ignore
   searchParams: {} as import("../app/blog/[slug]/page.tsx").SearchParams
@@ -110,62 +110,62 @@ export const safeRoutes = {
   // @ts-ignore
   searchParams: {} as import("../app/page.tsx").SearchParams
 },
-"/products": {
+"/products/": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../app/products/[[...filters]]/page.tsx").SearchParams
 },
-"/products/[[...filters]]": {
+"/products/[[...filters]]/": {
   params: {} as { filters: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../app/products/[[...filters]]/page.tsx").SearchParams
 },
-"/shop/[...categories]": {
+"/shop/[...categories]/": {
   params: {} as { categories: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../app/shop/[...categories]/page.tsx").SearchParams
 },
-"/shop": {
+"/shop/": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../app/shop/page.tsx").SearchParams
 },
-"/users/[user_id]/[year]/[month]": {
+"/users/[user_id]/[year]/[month]/": {
   params: {} as { userId: string | number, year: string | number, month: string | number },
   // @ts-ignore
   searchParams: {} as import("../app/users/[user_id]/[year]/[month]/page.tsx").SearchParams
 },
-"/users/[user_id]": {
+"/users/[user_id]/": {
   params: {} as { userId: string | number },
   // @ts-ignore
   searchParams: {} as import("../app/users/[user_id]/page.tsx").SearchParams
 },
-"/users/[user_id]/posts/[post-id]": {
+"/users/[user_id]/posts/[post-id]/": {
   params: {} as { userId: string | number, postId: string | number },
   // @ts-ignore
   searchParams: {} as import("../app/users/[user_id]/posts/[post-id]/page.tsx").SearchParams
 },
-"/about": {
+"/about/": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../pages/about.tsx").SearchParams
 },
-"/docs/[...slug]": {
+"/docs/[...slug]/": {
   params: {} as { slug: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../pages/docs/[...slug].tsx").SearchParams
 },
-"/video": {
+"/video/": {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as import("../pages/video/[[...name]].tsx").SearchParams
 },
-"/video/[[...name]]": {
+"/video/[[...name]]/": {
   params: {} as { name: string[] | number[] },
   // @ts-ignore
   searchParams: {} as import("../pages/video/[[...name]].tsx").SearchParams
 },
-"/video/[id]": {
+"/video/[id]/": {
   params: {} as { id: string | number },
   // @ts-ignore
   searchParams: {} as import("../pages/video/[id]/index.tsx").SearchParams

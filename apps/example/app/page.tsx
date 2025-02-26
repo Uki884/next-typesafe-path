@@ -8,20 +8,20 @@ export type SearchParams = {
 
 export default function HomePage() {
   const userId = safeRoute(
-    "/users/[user-id]/",
+    "/users/[user_id]",
     { userId: 1 },
     { page: 1, sort: "desc" },
   );
   safeRoute(
-    "/products/[[...filters]]/",
+    "/products/[[...filters]]",
     { filters: ["sort", "page"] },
     { sort: 'asc', page: 1},
   );
-  safeRoute('/products/', { sort: 'asc', page: 1});
-  safeRoute('/', { page: 1});
-  safeRoute("/users/[user-id]/", { userId: 1 }, { page: 1});
-  safeRoute("/shop/", { isRequired: true, isOptional: 1 });
-  safeRoute('/login/', { redirect: "https://example.com" });
+  safeRoute('/products', { sort: 'asc', page: 1});
+  safeRoute('/', { page: 1}),
+  safeRoute("/users/[user-id]", { userId: 1 }, { page: 1});
+  safeRoute("/shop", { isRequired: true, isOptional: 1 });
+  safeRoute('/login', { redirect: "https://example.com" });
 
   return (
     <div>

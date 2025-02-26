@@ -5,16 +5,14 @@ import chokidar from "chokidar";
 import { existsSync } from 'node:fs';
 import { program } from "commander";
 import { generateTypes } from "./generator";
-import { UserConfig } from "./types";
 
 program
   .name("safe-routes")
   .description("Generate type-safe routes for Next.js")
   .option("-w, --watch", "Watch for file changes and regenerate types")
   .option("-o, --out-dir <path>", "Output directory (default: .safe-routes)")
-  .option("--no-trailing-slash", "Disable trailing slash in generated routes")
-  .action(async (options: UserConfig) => {
-
+  .option("--trailing-slash <boolean>", "Enable trailing slash in generated routes", "true")
+  .action(async (options: { trailingSlash: 'true' | 'false', outDir: string, watch: boolean }) => {
     const findDirectory = (baseName: string): string | null => {
       const rootPath = path.resolve(process.cwd(), baseName);
       const srcPath = path.resolve(process.cwd(), "src", baseName);
@@ -25,7 +23,7 @@ program
 
     const appDir = findDirectory("app") || "";
     const pagesDir = findDirectory("pages") || "";
-    const trailingSlash = !!options.trailingSlash;
+    const trailingSlash = options.trailingSlash === 'true';
 
     if (!appDir && !pagesDir) {
       console.error("Error: Neither 'app' nor 'pages' directory found in root or src directory");
@@ -34,15 +32,19 @@ program
 
     const outDir = path.resolve(process.cwd(), options.outDir || ".safe-routes");
 
+    const config = {
+      appDir,
+      pagesDir,
+      options: {
+        trailingSlash,
+        outDir,
+      },
+    };
+
+    console.log('config', config);
+
     const generate = async () => {
-      return await generateTypes({
-        appDir: appDir || "",
-        pagesDir: pagesDir || "",
-        config: {
-          trailingSlash,
-          outDir,
-        },
-      });
+      return await generateTypes(config);
     };
 
     await generate();
@@ -61,9 +63,10 @@ program
       });
 
       watcher
-        .on("all", async () => {
-          await generateTypes({ appDir, pagesDir, config: { trailingSlash, outDir } })
-        })
+        .on("add", () => generateTypes(config))
+        .on("unlink", () => generateTypes(config))
+        .on("unlinkDir", () => generateTypes(config))
+        .on("change", () => generateTypes(config));
     }
   });
 

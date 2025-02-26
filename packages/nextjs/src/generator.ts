@@ -3,17 +3,17 @@ import { createAppScanner } from "./scanner/createAppScanner";
 import { createPagesScanner } from "./scanner/createPagesScanner";
 import { createFileContent } from "./writer/createFileContent";
 import { writeToFile } from "./writer/writeToFile";
-import { UserConfig } from "./types";
+import { UserOptions } from "./types";
 
 type Options = {
   appDir: string;
   pagesDir: string;
-  config: UserConfig;
+  options: UserOptions;
 };
 
-export async function generateTypes({ appDir, pagesDir, config }: Options) {
+export async function generateTypes({ appDir, pagesDir, options }: Options) {
   try {
-    const outDir = config.outDir || ".safe-routes";
+    const outDir = options.outDir || ".safe-routes";
     await fs.mkdir(outDir, { recursive: true });
     const appScanner = createAppScanner({ inputDir: appDir, outDir });
     const pagesScanner = createPagesScanner({ inputDir: pagesDir, outDir });
@@ -23,7 +23,7 @@ export async function generateTypes({ appDir, pagesDir, config }: Options) {
     const allRoutes = [...appRoutes, ...pagesRoutes];
 
     // generate TypeScript source file
-    const content = createFileContent({ routes: allRoutes, config });
+    const content = createFileContent({ routes: allRoutes, options });
     await writeToFile(content, `${outDir}/index.ts`);
     console.log("==================================");
     console.log("✨ Generating routes types...");
