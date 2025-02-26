@@ -171,5 +171,3 @@ export const safeRoutes = {
   searchParams: {} as import("../pages/video/[id]/index.tsx").SearchParams
 }
 } as const;
-
-safeRoute('/products', { page: 1 })
