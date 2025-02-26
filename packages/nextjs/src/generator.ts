@@ -25,10 +25,6 @@ export async function generateTypes({ appDir, pagesDir, options }: Options) {
     // generate TypeScript source file
     const content = createFileContent({ routes: allRoutes, options });
     await writeToFile(content, `${outDir}/index.ts`);
-    console.log("==================================");
-    console.log("✨ Generating routes types...");
-    console.log("🚀 by @safe-routes/nextjs");
-    console.log("==================================");
   } catch (error) {
     console.error("Error generating types:", error);
   }

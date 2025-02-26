@@ -41,7 +41,24 @@ program
       },
     };
 
-    await generateTypes(config);
+    let timeoutId: NodeJS.Timeout | null = null;
+    const debouncedGenerate = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(async () => {
+        try {
+          await generateTypes(config);
+        } catch (error) {
+          if (!options.watch) process.exit(1);
+        }
+      }, 1000);
+    };
+
+    debouncedGenerate();
+
+    console.log("==================================");
+    console.log("✨ Generating routes types...");
+    console.log("🚀 by @safe-routes/nextjs");
+    console.log("==================================");
 
     if (options.watch) {
       const targetDirs = [appDir, pagesDir].filter((dir) => dir);
@@ -50,17 +67,15 @@ program
         ignored: /(^|[\/\\])\../,
         persistent: true,
         ignoreInitial: true,
-        awaitWriteFinish: {
-          stabilityThreshold: 100,
-          pollInterval: 100,
-        },
+        usePolling: false,
+        awaitWriteFinish: true,
       });
 
       watcher
-        .on("add", () => generateTypes(config))
-        .on("unlink", () => generateTypes(config))
-        .on("unlinkDir", () => generateTypes(config))
-        .on("change", () => generateTypes(config));
+        .on("add", () => debouncedGenerate())
+        .on("unlink", () => debouncedGenerate())
+        .on("unlinkDir", () => debouncedGenerate())
+        .on("change", () => debouncedGenerate());
     }
   });
 
