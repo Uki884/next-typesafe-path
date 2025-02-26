@@ -41,13 +41,7 @@ program
       },
     };
 
-    console.log('config', config);
-
-    const generate = async () => {
-      return await generateTypes(config);
-    };
-
-    await generate();
+    await generateTypes(config);
 
     if (options.watch) {
       const targetDirs = [appDir, pagesDir].filter((dir) => dir);
