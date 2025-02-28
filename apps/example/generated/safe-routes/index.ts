@@ -29,7 +29,7 @@ const buildSearchParams = (params?: SearchParams): string => {
   return `?${searchParams.toString()}`;
 };
 
-export type SafeRoutePath = "/login" | "/blog/[slug]/[hoge]" | "/blog/[slug]" | "/" | "/products/[[...filters]]" | "/products" | "/shop/[...categories]" | "/shop" | "/users/[user_id]/[year]/[month]" | "/users/[user_id]" | "/users/[user_id]/posts/[post-id]" | "/about" | "/docs/[...slug]" | "/video/[[...name]]" | "/video" | "/video/[id]";;
+export type SafeRoutePath = "/login" | "/blog/[slug]/[hoge]" | "/blog/[slug]" | "/products/[[...filters]]" | "/products" | "/shop/[...categories]" | "/shop" | "/top" | "/users/[user_id]/[year]/[month]" | "/users/[user_id]" | "/users/[user_id]/posts/[post-id]" | "/about" | "/docs/[...slug]" | "/video/[[...name]]" | "/video" | "/video/[id]";;
 
 export type SafeRouteParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['params'];
 export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
@@ -107,11 +107,6 @@ export const safeRoutes = {
   // @ts-ignore
   searchParams: {} as ExportedQuery<import("../../app/blog/[slug]/page.tsx").SearchParams & import("./types").GlobalSearchParams>
 },
-"/": {
-  params: {} as Record<string, never>,
-  // @ts-ignore
-  searchParams: {} as ExportedQuery<import("../../app/page.tsx").SearchParams & import("./types").GlobalSearchParams>
-},
 "/products": {
   params: {} as Record<string, never>,
   // @ts-ignore
@@ -131,6 +126,11 @@ export const safeRoutes = {
   params: {} as Record<string, never>,
   // @ts-ignore
   searchParams: {} as ExportedQuery<import("../../app/shop/page.tsx").SearchParams & import("./types").GlobalSearchParams>
+},
+"/top": {
+  params: {} as Record<string, never>,
+  // @ts-ignore
+  searchParams: {} as ExportedQuery<import("../../app/top/page.tsx").SearchParams & import("./types").GlobalSearchParams>
 },
 "/users/[user_id]/[year]/[month]": {
   params: {} as { userId: string | number, year: string | number, month: string | number },

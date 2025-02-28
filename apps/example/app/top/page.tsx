@@ -1,12 +1,28 @@
-import { safeRoute } from "@safe-routes/nextjs";
+import {
+  safeRoute,
+  createSearchParams,
+  parseSearchParams,
+  InferSearchParams,
+} from "@safe-routes/nextjs";
 import Link from "next/link";
 
-export type SearchParams = {
-  page: number;
-  sort?: "asc" | "desc";
-};
+export const schema = createSearchParams(({ page, oneOf, search }) => ({
+  page: page(),
+  sort: oneOf(["asc", "desc"] as const, 'asc'),
+  q: search(''),
+  via: oneOf(["hoge", "fuga"] as const, 'hoge'),
+}));
 
-export default function HomePage() {
+export type SearchParams = InferSearchParams<typeof schema>;
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = parseSearchParams(schema, await searchParams);
+  console.log('params', params);
+
   const userId = safeRoute(
     "/users/[user_id]",
     { userId: 1 },
@@ -18,13 +34,14 @@ export default function HomePage() {
     { sort: "asc", page: 1 },
   );
   safeRoute("/products", { sort: "asc", page: 1 });
-  safeRoute("/", { page: 1 });
+  // safeRoute("/", { page: 1 });
   safeRoute("/shop", { isRequired: true, isOptional: 1 });
   safeRoute("/login", { redirect: "https://example.com" });
 
   return (
     <div>
       <h1>Route Examples</h1>
+      {JSON.stringify(params)}
       <ul>
         <li>
           <Link
