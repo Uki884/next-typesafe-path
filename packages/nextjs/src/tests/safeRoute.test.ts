@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { safeRoute } from "../tests/.safe-routes/index";
+import { safeRoute } from "../tests/generated/safe-routes/index";
 
 describe("safeRoute", () => {
   // Case 1: No params, no search params

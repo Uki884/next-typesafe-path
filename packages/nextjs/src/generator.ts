@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import { createDefaultConfigFile } from "./generator/createDefaultConfig";
+import { createGlobalSearchParamsFile } from "./generator/createGlobalSearchParamsFile";
 import { createAppScanner } from "./scanner/createAppScanner";
 import { createPagesScanner } from "./scanner/createPagesScanner";
 import { UserOptions } from "./types";
@@ -17,7 +17,7 @@ export async function generateTypes({ appDir, pagesDir, options }: Options) {
     const outDir = options.outDir || "generated/safe-routes";
     await fs.mkdir(outDir, { recursive: true });
 
-    await createDefaultConfigFile(outDir);
+    await createGlobalSearchParamsFile(outDir);
 
     const appScanner = createAppScanner({ inputDir: appDir, outDir });
     const pagesScanner = createPagesScanner({ inputDir: pagesDir, outDir });

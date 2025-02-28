@@ -5,7 +5,7 @@ export const setup = async () => {
     appDir: "src/fixtures/app",
     pagesDir: "",
     options: {
-      outDir: "src/tests/.safe-routes",
+      outDir: "src/tests/generated/safe-routes",
       trailingSlash: true,
     },
   });
