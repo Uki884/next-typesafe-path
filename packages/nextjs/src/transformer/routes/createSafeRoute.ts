@@ -3,7 +3,7 @@ export const createSafeRoute = () => {
 export type SafeRouteSearchParams<T extends SafeRoutePath> = (typeof safeRoutes)[T]['searchParams'];
 export type SafeRoutes = typeof safeRoutes;
 
-type GlobalSearchParams = InferSearchParams<typeof import("./types")['$SearchParams']>;
+type GlobalSearchParams = import("./types").SearchParams;
 type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
 type HasSearchParams<T> = T extends { searchParams: undefined } ? false : true;
 type HasParams<T> = T extends Record<string, never> ? false : true

@@ -9,5 +9,5 @@ export const generateSearchParamsType = (
 
   return `
   // @ts-ignore
-  typeof import("${importPath}")['$SearchParams']`;
+  import("${importPath}").SearchParams`;
 };

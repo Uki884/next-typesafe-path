@@ -4,10 +4,12 @@ import {
   parseSearchParams,
 } from "@safe-routes/nextjs";
 
-export const $SearchParams = createSearchParams((q) => ({
+const SearchParams = createSearchParams((q) => ({
   page: q.numberOr(1),
   sort: q.enumOr(["asc", "desc"] as const, "asc"),
 }));
+
+export type SearchParams = InferSearchParams<typeof SearchParams>;
 
 export default async function UsersUserIdPage({
   params,
@@ -16,11 +18,11 @@ export default async function UsersUserIdPage({
   params: {
     userId: string;
   };
-  searchParams: Promise<InferSearchParams<typeof $SearchParams>>;
+  searchParams: Promise<SearchParams>;
 }) {
   const parsedSearchParams = parseSearchParams(
-    $SearchParams,
-    await searchParams,
+    SearchParams,
+    await searchParams
   );
   console.log(parsedSearchParams);
   return <h1>Users UserId Page</h1>;

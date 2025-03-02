@@ -21,7 +21,7 @@ export const createRouteDefinition = ({
     (s) => s.dynamicType === "optional-catch-all",
   );
 
-  const searchParamsType = `ExportedQuery<InferSearchParams<${route.searchParamsType}>>`;
+  const searchParamsType = `ExportedQuery<${route.searchParamsType}>`;
 
   if (hasOptionalCatchAll) {
     const basePath = `"/${route.routeSegments

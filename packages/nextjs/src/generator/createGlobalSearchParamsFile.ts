@@ -19,14 +19,16 @@ export const createGlobalSearchParamsFile = async (
   }
 
   const defaultContent = `
-import { createSearchParams } from "@safe-routes/nextjs";
+import { createSearchParams, InferSearchParams } from "@safe-routes/nextjs";
 /**
  * Global search parameters that will be applied to all routes
  */
-export const $SearchParams = createSearchParams(() => ({
+const SearchParams = createSearchParams(() => ({
   // Add your global search parameters here
   // locale: p.enumOr(["en", "ja"] as const, "en"),
 })).passthrough();
+
+export type SearchParams = InferSearchParams<typeof SearchParams>;
 `;
 
   await fs.writeFile(typesPath, defaultContent, "utf8");
