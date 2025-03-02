@@ -1,42 +1,41 @@
 import {
-  safeRoute,
+  $path,
+  InferSearchParams,
   createSearchParams,
   parseSearchParams,
-  InferSearchParams,
 } from "@safe-routes/nextjs";
 import Link from "next/link";
 
-export const schema = createSearchParams(({ page, oneOf, search }) => ({
-  page: page(),
-  sort: oneOf(["asc", "desc"] as const, 'asc'),
-  q: search(''),
-  via: oneOf(["hoge", "fuga"] as const, 'hoge'),
-}));
-
-export type SearchParams = InferSearchParams<typeof schema>;
+export const $SearchParams = createSearchParams(
+  ({ numberOr, enumOr, stringOr }) => ({
+    page: numberOr(2),
+    sort: enumOr(["asc", "desc"] as const, "asc"),
+    q: stringOr("sss"),
+  }),
+);
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<SearchParams>;
+  searchParams: Promise<InferSearchParams<typeof $SearchParams>>;
 }) {
-  const params = parseSearchParams(schema, await searchParams);
-  console.log('params', params);
+  const params = parseSearchParams($SearchParams, await searchParams, {
+    passthrough: false,
+  });
 
-  const userId = safeRoute(
+  const userId = $path(
     "/users/[user_id]",
     { userId: 1 },
-    { page: 1, sort: "desc" },
+    { sort: "asc", page: 1 },
   );
-  safeRoute(
+  $path(
     "/products/[[...filters]]",
     { filters: ["sort", "page"] },
     { sort: "asc", page: 1 },
   );
-  safeRoute("/products", { sort: "asc", page: 1 });
-  // safeRoute("/", { page: 1 });
-  safeRoute("/shop", { isRequired: true, isOptional: 1 });
-  safeRoute("/login", { redirect: "https://example.com" });
+  $path("/products", { sort: "asc", page: 1 });
+  $path("/shop", { isRequired: true, isOptional: 1 });
+  $path("/login", { redirect: "https://example.com" });
 
   return (
     <div>
@@ -44,15 +43,18 @@ export default async function HomePage({
       {JSON.stringify(params)}
       <ul>
         <li>
-          <Link
-            href={safeRoute("/blog/[slug]", { slug: "hello" }, { page: 1 })}
-          >
+          <Link href={$path("/top", { page: 1, sort: "desc", q: "" })}>
+            Top
+          </Link>
+        </li>
+        <li>
+          <Link href={$path("/blog/[slug]", { slug: "hello" }, { page: 1 })}>
             Dynamic Route
           </Link>
         </li>
         <li>
           <Link
-            href={safeRoute(
+            href={$path(
               "/shop/[...categories]",
               { categories: ["men", "shoes"] },
               { page: 1 },
@@ -62,13 +64,13 @@ export default async function HomePage({
           </Link>
         </li>
         <li>
-          <Link href={safeRoute("/products", { sort: "asc", page: 1 })}>
+          <Link href={$path("/products", { sort: "asc", page: 1 })}>
             Optional Catch-all
           </Link>
         </li>
         <li>
           <Link
-            href={safeRoute(
+            href={$path(
               "/users/[user_id]/posts/[post-id]",
               { userId: "123", postId: "11" },
               { page: 1 },

@@ -21,7 +21,7 @@ export const createRouteDefinition = ({
     (s) => s.dynamicType === "optional-catch-all",
   );
 
-  const searchParamsType = `ExportedQuery<${route.searchParamsType} & import("./types").GlobalSearchParams>`;
+  const searchParamsType = `ExportedQuery<InferSearchParams<${route.searchParamsType}>>`;
 
   if (hasOptionalCatchAll) {
     const basePath = `"/${route.routeSegments
@@ -31,19 +31,16 @@ export const createRouteDefinition = ({
 
     return `${basePath}: {
   params: {} as Record<string, never>,
-  // @ts-ignore
   searchParams: {} as ${searchParamsType}
 },
 ${path}: {
   params: {} as ${createParamsType(route, true)},
-  // @ts-ignore
   searchParams: {} as ${searchParamsType}
 }`;
   }
 
   return `${path}: {
   params: {} as ${createParamsType(route)},
-  // @ts-ignore
   searchParams: {} as ${searchParamsType}
 }`;
 };

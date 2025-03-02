@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs/promises";
 import { readdir } from "fs/promises";
 import { generateSearchParamsType } from "../generator/generateSearchParamsType";
 import { RouteFunctionDefinition, RouteSegment } from "../types";
@@ -49,6 +50,12 @@ export function createAppScanner({
           searchParamsType,
         });
       } else {
+        const isDirectory = (await fs.stat(fullPath)).isDirectory();
+
+        if (!isDirectory) {
+          continue;
+        }
+
         // handle route group
         if (isRouteGroup(item)) {
           routes.push(

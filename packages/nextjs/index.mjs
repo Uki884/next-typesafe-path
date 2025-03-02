@@ -1,2 +1,2 @@
 export * from "generated/safe-routes";
-export * from "./src/params/create-search-params";
+export * from "./src/params/createSearchParams";

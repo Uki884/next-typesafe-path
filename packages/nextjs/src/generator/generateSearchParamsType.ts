@@ -7,5 +7,7 @@ export const generateSearchParamsType = (
   // calculate relative path from outDir to targetFile
   const importPath = path.relative(outDir, fullPath).replace(/\\/g, "/");
 
-  return `import("${importPath}").SearchParams`;
+  return `
+  // @ts-ignore
+  typeof import("${importPath}")['$SearchParams']`;
 };
