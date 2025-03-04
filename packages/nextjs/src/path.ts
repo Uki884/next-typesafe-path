@@ -1,7 +1,7 @@
 import { RouteList } from "@@@safe-routes/nextjs";
 
 type SearchParams = {
-  [key: string]: string | number | undefined | string[] | number[];
+  [key: string]: unknown;
 };
 
 type SafeRoutePath = keyof RouteList & string;
@@ -16,7 +16,6 @@ type PickSearchParams<T extends SafeRoutePath> = Pick<
   RouteList[T],
   "searchParams"
 >;
-type IsSearchParamsEmpty<T> = T extends Record<string, never> ? true : false;
 
 type RouteParameters<T extends SafeRoutePath> = {
   RequiredBoth: [
@@ -81,15 +80,17 @@ export const $path = <T extends SafeRoutePath>(
   const pathString = path as string;
   const hasDynamicParams = pathString.includes("[");
   const params = hasDynamicParams ? args[0] : {};
+
   const searchParams = hasDynamicParams ? args[1] : args[0];
 
   const resolvedPath = pathString.replace(
     /\[(?:\[)?(?:\.\.\.)?([^\]]+?)\](?:\])?/g,
     (_, key: string) => {
-      const paramKey = key.replace(/[-_]([a-z])/g, (_: string, c: string) =>
+      const paramKey = key.replace(/[-_]([a-zA-Z])/g, (_: string, c: string) =>
         c.toUpperCase(),
       ) as keyof typeof params;
       const value = params?.[paramKey] || "";
+      if (value === undefined || value === null) return "";
 
       if (Array.isArray(value)) {
         if (value.length === 0) return "";
@@ -102,7 +103,9 @@ export const $path = <T extends SafeRoutePath>(
   );
 
   // Remove extra slashes
-  const normalizedPath = resolvedPath.replace(/\/+/g, "/");
+  const normalizedPath = resolvedPath
+    .replace(/\/+/g, "/")
+    .replace(/\/\/+/g, "/");
 
   return `${normalizedPath}${buildSearchParams(searchParams)}` as T;
 };
