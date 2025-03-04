@@ -1,6 +1,37 @@
 import { z } from "zod";
 
-type ParamBuilder = {
+class GlobalSearchParamsManager {
+  private static instance: GlobalSearchParamsManager;
+  private schema: z.ZodObject<z.ZodRawShape> | null = null;
+  private initialized = false;
+  private constructor() {}
+
+  public static getInstance(): GlobalSearchParamsManager {
+    if (!GlobalSearchParamsManager.instance) {
+      GlobalSearchParamsManager.instance = new GlobalSearchParamsManager();
+    }
+    return GlobalSearchParamsManager.instance;
+  }
+
+  public setSchema(schema: z.ZodObject<z.ZodRawShape>): void {
+    if (this.initialized) {
+      return;
+    }
+
+    this.schema = schema;
+    this.initialized = true;
+  }
+
+  public getSchema(): z.ZodObject<z.ZodRawShape> {
+    if (!this.schema) {
+      // デフォルトの空スキーマを返す
+      return z.object({});
+    }
+    return this.schema;
+  }
+}
+
+export type ParamBuilder = {
   stringOr: (defaultValue?: string) => z.ZodType<string>;
   numberOr: (defaultValue?: number) => z.ZodType<number>;
   booleanOr: (defaultValue?: boolean) => z.ZodType<boolean>;
@@ -25,9 +56,9 @@ type ParamBuilder = {
   ) => z.ZodType<T>;
 };
 
-export const createSearchParams = <T extends Record<string, z.ZodType>>(
-  builder: (p: ParamBuilder) => T,
-) => {
+export type InferSearchParams<T extends z.ZodType> = z.infer<T>;
+
+const getParamBuilder = () => {
   const p: ParamBuilder = {
     stringOr: (defaultValue = "") => {
       return p.or(p.parse.string(), defaultValue);
@@ -80,7 +111,41 @@ export const createSearchParams = <T extends Record<string, z.ZodType>>(
       errorMessage: string,
     ) => schema.refine(validator, { message: errorMessage }),
   };
+  return p;
+};
 
+export const defineSearchParamsWithGlobal =
+  (globalSchema: z.ZodObject<z.ZodRawShape>) =>
+  <T extends Record<string, z.ZodType>>(builder: (p: ParamBuilder) => T) => {
+    const p = getParamBuilder();
+    const schema = builder(p);
+    const mergedSchema = z.object(schema).merge(globalSchema);
+    return mergedSchema;
+  };
+
+export const setGlobalSearchParams = (
+  schema: z.ZodObject<z.ZodRawShape>,
+): void => {
+  GlobalSearchParamsManager.getInstance().setSchema(schema);
+};
+
+export const getGlobalSearchParams = (): z.ZodObject<z.ZodRawShape> => {
+  return GlobalSearchParamsManager.getInstance().getSchema();
+};
+
+export const createSearchParamsWithGlobal = <
+  T extends Record<string, z.ZodType>,
+>(
+  builder: (p: ParamBuilder) => T,
+): z.ZodObject<z.ZodRawShape> => {
+  const globalSchema = getGlobalSearchParams();
+  return defineSearchParamsWithGlobal(globalSchema)(builder);
+};
+
+export const createSearchParams = <T extends Record<string, z.ZodType>>(
+  builder: (p: ParamBuilder) => T,
+) => {
+  const p = getParamBuilder();
   const schema = builder(p);
   return z.object(schema);
 };
@@ -95,7 +160,6 @@ export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
   const passthrough = options?.passthrough ?? true;
   const data =
     input instanceof URLSearchParams ? Object.fromEntries(input) : input;
+
   return passthrough ? schema.passthrough().parse(data) : schema.parse(data);
 };
-
-export type InferSearchParams<T extends z.ZodType> = z.infer<T>;

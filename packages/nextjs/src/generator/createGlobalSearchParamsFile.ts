@@ -9,28 +9,26 @@ async function fileExists(filepath: string) {
   }
 }
 
-export const createGlobalSearchParamsFile = async (
-  outDir: string,
-): Promise<void> => {
-  const typesPath = path.join(outDir, "./types.ts");
+export const createGlobalSearchParamsFile = async (outDir: string) => {
+  const configPath = path.join(outDir, "./safe-routes.config.ts");
 
-  if (await fileExists(typesPath)) {
+  if (await fileExists(configPath)) {
     return;
   }
 
-  const defaultContent = `
-import { createSearchParams, InferSearchParams } from "@safe-routes/nextjs";
-/**
- * Global search parameters that will be applied to all routes
- */
-const SearchParams = createSearchParams(() => ({
+  const content = `
+import { createSearchParams, InferSearchParams, setGlobalSearchParams } from "@safe-routes/nextjs";
+
+export const globalSearchParams = createSearchParams((p) => ({
   // Add your global search parameters here
   // locale: p.enumOr(["en", "ja"] as const, "en"),
 })).passthrough();
 
-export type SearchParams = InferSearchParams<typeof SearchParams>;
+export type GlobalSearchParams = InferSearchParams<typeof globalSearchParams>;
+
+setGlobalSearchParams(globalSearchParams);
 `;
 
-  await fs.writeFile(typesPath, defaultContent, "utf8");
-  console.log(`Created default types.ts at ${typesPath}`);
+  await fs.writeFile(configPath, content);
+  console.log(`Created default config.ts at ${configPath}`);
 };

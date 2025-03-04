@@ -22,7 +22,7 @@ export default async function UsersUserIdPage({
 }) {
   const parsedSearchParams = parseSearchParams(
     SearchParams,
-    await searchParams
+    await searchParams,
   );
   console.log(parsedSearchParams);
   return <h1>Users UserId Page</h1>;

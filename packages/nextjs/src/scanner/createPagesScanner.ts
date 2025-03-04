@@ -12,10 +12,7 @@ function getStaticParentPath(segments: RouteSegment[]): string | undefined {
     .join("/");
 }
 
-export function createPagesScanner({
-  inputDir,
-  outDir,
-}: { inputDir?: string; outDir: string }) {
+export function createPagesScanner({ inputDir }: { inputDir?: string }) {
   if (!inputDir) {
     return undefined;
   }
@@ -68,10 +65,11 @@ export function createPagesScanner({
           }
 
           if (isIndex || segment) {
+            const relativePath = path.relative(process.cwd(), fullPath);
             const segments = isIndex
               ? parentSegments
               : [...parentSegments, segment];
-            const searchParamsType = generateSearchParamsType(fullPath, outDir);
+            const searchParamsType = generateSearchParamsType(relativePath);
             routes.push({
               routeSegments: segments,
               searchParamsType,

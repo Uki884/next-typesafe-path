@@ -8,7 +8,7 @@
     "rules": {
       "recommended": true
     },
-    "ignore": ["generated/**", "node_modules/**", ".next/**", "dist/**"]
+    "ignore": ["generated/**", "node_modules/**", ".next", "dist/**"]
   },
   "formatter": {
     "enabled": true,

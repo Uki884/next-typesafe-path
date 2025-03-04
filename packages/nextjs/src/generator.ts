@@ -1,9 +1,10 @@
-import fs from "fs/promises";
+import path from "path";
+import { mkdir } from "fs/promises";
 import { createGlobalSearchParamsFile } from "./generator/createGlobalSearchParamsFile";
 import { createAppScanner } from "./scanner/createAppScanner";
 import { createPagesScanner } from "./scanner/createPagesScanner";
 import { UserOptions } from "./types";
-import { createFileContent } from "./writer/createFileContent";
+import { createTypeDefinitionContent } from "./writer/createTypeDefinitionContent";
 import { writeToFile } from "./writer/writeToFile";
 
 type Options = {
@@ -12,24 +13,37 @@ type Options = {
   options: UserOptions;
 };
 
-export async function generateTypes({ appDir, pagesDir, options }: Options) {
-  try {
-    const outDir = options.outDir || "generated/safe-routes";
-    await fs.mkdir(outDir, { recursive: true });
+export const generateTypes = async ({
+  appDir,
+  pagesDir,
+  options,
+}: Options): Promise<void> => {
+  const { outDir } = options;
 
-    await createGlobalSearchParamsFile(outDir);
+  await createGlobalSearchParamsFile(outDir);
 
-    const appScanner = createAppScanner({ inputDir: appDir, outDir });
-    const pagesScanner = createPagesScanner({ inputDir: pagesDir, outDir });
+  // create scanner
+  const appScannerFn = createAppScanner({ inputDir: appDir });
+  const pagesScannerFn = createPagesScanner({ inputDir: pagesDir });
 
-    const appRoutes = appScanner ? await appScanner() : [];
-    const pagesRoutes = pagesScanner ? await pagesScanner() : [];
-    const allRoutes = [...appRoutes, ...pagesRoutes];
+  // scan routes
+  const appRoutes = appScannerFn ? await appScannerFn() : [];
+  const pagesRoutes = pagesScannerFn ? await pagesScannerFn() : [];
 
-    // generate TypeScript source file
-    const content = createFileContent({ routes: allRoutes, options });
-    await writeToFile(content, `${outDir}/index.ts`);
-  } catch (error) {
-    console.error("Error generating types:", error);
-  }
-}
+  // combine all routes
+  const routes = [...appRoutes, ...pagesRoutes];
+
+  // create directory if not exists
+  await mkdir(outDir, { recursive: true });
+
+  const typeDefPath = path.join(process.cwd(), "safe-routes.d.ts");
+
+  // create type definition file content
+  const typeDefinitionContent = createTypeDefinitionContent({
+    routes,
+    options,
+  });
+
+  // write to type definition file
+  await writeToFile(typeDefPath, typeDefinitionContent);
+};

@@ -1,1 +1,9 @@
-export { createSearchParams, parseSearchParams, type InferSearchParams } from "./params/createSearchParams";
+export {
+  defineSearchParamsWithGlobal,
+  createSearchParams,
+  parseSearchParams,
+  createSearchParamsWithGlobal,
+  type InferSearchParams,
+  setGlobalSearchParams,
+  getGlobalSearchParams,
+} from "./params/createSearchParams";

@@ -1,2 +1,8 @@
-export { $path } from "generated/safe-routes";
-export { createSearchParams, parseSearchParams } from "./dist";
+export {
+  parseSearchParams,
+  createSearchParams,
+  createSearchParamsWithGlobal,
+  setGlobalSearchParams,
+} from "./dist/index.js";
+
+export { $path } from "./dist/path.js";

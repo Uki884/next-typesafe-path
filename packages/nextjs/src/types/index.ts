@@ -13,6 +13,6 @@ export type FileContentOption = {
 
 export type UserOptions = {
   trailingSlash: boolean;
-  outDir?: string;
+  outDir: string;
   watch?: boolean;
 };

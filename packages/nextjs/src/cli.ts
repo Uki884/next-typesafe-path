@@ -6,11 +6,27 @@ import chokidar from "chokidar";
 import { program } from "commander";
 import { generateTypes } from "./generator";
 
+const findRootDir = (startDir: string = process.cwd()): string => {
+  if (existsSync(path.join(startDir, "package.json"))) {
+    return startDir;
+  }
+
+  const parentDir = path.dirname(startDir);
+  if (parentDir === startDir) {
+    return process.cwd();
+  }
+
+  return findRootDir(parentDir);
+};
+
 program
   .name("safe-routes")
   .description("Generate type-safe routes for Next.js")
   .option("-w, --watch", "Watch for file changes and regenerate types")
-  .option("-o, --out-dir <path>", "Output directory (default: .safe-routes)")
+  .option(
+    "-o, --out-dir <path>",
+    "Output directory (default: libs/safe-routes)",
+  )
   .option(
     "--trailing-slash <boolean>",
     "Enable trailing slash in generated routes",
@@ -40,11 +56,7 @@ program
         );
         process.exit(1);
       }
-
-      const outDir = path.resolve(
-        process.cwd(),
-        options.outDir || "generated/safe-routes",
-      );
+      const outDir = options.outDir || ".";
 
       const config = {
         appDir,
