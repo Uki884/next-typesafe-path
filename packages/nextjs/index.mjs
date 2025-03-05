@@ -1,8 +1,8 @@
 export {
   parseSearchParams,
   createSearchParams,
-  createSearchParamsWithGlobal,
   setGlobalSearchParams,
+  createGlobalSearchParams,
 } from "./dist/index.js";
 
 export { $path } from "./dist/path.js";

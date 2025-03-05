@@ -25,9 +25,12 @@ export const createTypeDefinitionContent = ({
 // DO NOT EDIT DIRECTLY
 
 declare module "@@@safe-routes/nextjs" {
-  type GlobalSearchParams = import("${options.outDir}/safe-routes.config").GlobalSearchParams;
   type IsSearchParams<T> = symbol extends keyof T ? false : true;
-  type ExportedQuery<T> = IsSearchParams<T> extends true ? T & GlobalSearchParams : GlobalSearchParams;
+  type Config = import("${options.outDir}/safe-routes.config").GlobalSearchParams;
+  type GlobalSearchParams = IsSearchParams<Config> extends true ? Config : never;
+  type ExportedQuery<T> = IsSearchParams<T> extends true
+    ? { [K in keyof T]: T[K] } & { [K in keyof GlobalSearchParams]: GlobalSearchParams[K] }
+    : GlobalSearchParams;
 
   interface RouteList {
 ${routeDefinitions

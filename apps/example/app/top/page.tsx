@@ -1,19 +1,19 @@
 import {
   $path,
   InferSearchParams,
-  createSearchParamsWithGlobal,
+  createSearchParams,
   parseSearchParams,
 } from "@safe-routes/nextjs";
 
 import Link from "next/link";
 
-const SearchParams = createSearchParamsWithGlobal(
+const SearchParams = createSearchParams(
   ({ numberOr, enumOr, stringOr }) => ({
     page: numberOr(2),
     sort: enumOr(["asc", "desc"] as const, "asc"),
     q: stringOr("sss"),
-  }),
-);
+  })
+)
 
 export type SearchParams = InferSearchParams<typeof SearchParams>;
 
@@ -32,7 +32,7 @@ export default async function HomePage({
   $path(
     "/products/[[...filters]]",
     { filters: ["sort", "page"] },
-    { sort: "asc", page: 1, locale: "ja" },
+    { sort: "asc", page: 1 },
   );
   $path("/products", { sort: "asc", page: 1, locale: "ja" });
   $path("/shop", { isRequired: true, isOptional: 1, locale: "ja" });

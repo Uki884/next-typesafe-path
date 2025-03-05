@@ -22,10 +22,9 @@ class GlobalSearchParamsManager {
     this.initialized = true;
   }
 
-  public getSchema(): z.ZodObject<z.ZodRawShape> {
+  public getSchema(): z.ZodObject<z.ZodRawShape> | undefined {
     if (!this.schema) {
-      // デフォルトの空スキーマを返す
-      return z.object({});
+      return undefined;
     }
     return this.schema;
   }
@@ -55,8 +54,6 @@ export type ParamBuilder = {
     errorMessage: string,
   ) => z.ZodType<T>;
 };
-
-export type InferSearchParams<T extends z.ZodType> = z.infer<T>;
 
 const getParamBuilder = () => {
   const p: ParamBuilder = {
@@ -114,40 +111,52 @@ const getParamBuilder = () => {
   return p;
 };
 
-export const defineSearchParamsWithGlobal =
-  (globalSchema: z.ZodObject<z.ZodRawShape>) =>
-  <T extends Record<string, z.ZodType>>(builder: (p: ParamBuilder) => T) => {
-    const p = getParamBuilder();
-    const schema = builder(p);
-    const mergedSchema = z.object(schema).merge(globalSchema);
-    return mergedSchema;
-  };
-
 export const setGlobalSearchParams = (
   schema: z.ZodObject<z.ZodRawShape>,
 ): void => {
   GlobalSearchParamsManager.getInstance().setSchema(schema);
 };
 
-export const getGlobalSearchParams = (): z.ZodObject<z.ZodRawShape> => {
+export const getGlobalSearchParams = () => {
   return GlobalSearchParamsManager.getInstance().getSchema();
 };
 
-export const createSearchParamsWithGlobal = <
-  T extends Record<string, z.ZodType>,
->(
-  builder: (p: ParamBuilder) => T,
-): z.ZodObject<z.ZodRawShape> => {
-  const globalSchema = getGlobalSearchParams();
-  return defineSearchParamsWithGlobal(globalSchema)(builder);
-};
+export const defineSearchParamsWithGlobal =
+  (globalSchema: z.ZodObject<z.ZodRawShape>) =>
+    <T extends Record<string, z.ZodType>>(builder: (p: ParamBuilder) => T ) => {
+    const p = getParamBuilder();
+    const schema = builder(p);
+    const mergedSchema = z.object(schema).merge(globalSchema);
+    return mergedSchema;
+  };
 
-export const createSearchParams = <T extends Record<string, z.ZodType>>(
+export const defineSearchParams = <T extends Record<string, z.ZodType>>(
   builder: (p: ParamBuilder) => T,
 ) => {
   const p = getParamBuilder();
   const schema = builder(p);
   return z.object(schema);
+};
+
+export const createSearchParams = <
+  T extends Record<string, z.ZodType>,
+>(
+  builder: (p: ParamBuilder) => T,
+) => {
+  const globalSchema = getGlobalSearchParams();
+  if (!globalSchema) {
+    return defineSearchParams(builder);
+  }
+  const schema = defineSearchParamsWithGlobal(globalSchema)(builder);
+  return schema;
+};
+
+export const createGlobalSearchParams = <
+  T extends Record<string, z.ZodType>,
+>(
+  builder: (p: ParamBuilder) => T,
+) => {
+  return defineSearchParams(builder);
 };
 
 export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
@@ -163,3 +172,5 @@ export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
 
   return passthrough ? schema.passthrough().parse(data) : schema.parse(data);
 };
+
+export type InferSearchParams<T extends z.ZodType> = z.infer<T>;

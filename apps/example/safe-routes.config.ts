@@ -1,12 +1,9 @@
-import {
-  InferSearchParams,
-  createSearchParams,
-  setGlobalSearchParams,
-} from "@safe-routes/nextjs";
+import { createGlobalSearchParams, InferSearchParams, setGlobalSearchParams } from "@safe-routes/nextjs";
 
-export const globalSearchParams = createSearchParams((p) => ({
+export const globalSearchParams = createGlobalSearchParams((p) => ({
   // Add your global search parameters here
-})).passthrough();
+  locale: p.enumOr(["en", "ja"], "ja").optional(),
+}));
 
 export type GlobalSearchParams = InferSearchParams<typeof globalSearchParams>;
 
