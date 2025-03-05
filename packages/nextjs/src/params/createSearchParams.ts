@@ -126,8 +126,7 @@ export const defineSearchParamsWithGlobal =
     <T extends Record<string, z.ZodType>>(builder: (p: ParamBuilder) => T ) => {
     const p = getParamBuilder();
     const schema = builder(p);
-    const mergedSchema = z.object(schema).merge(globalSchema);
-    return mergedSchema;
+    return globalSchema.extend(schema);
   };
 
 export const defineSearchParams = <T extends Record<string, z.ZodType>>(
@@ -144,11 +143,11 @@ export const createSearchParams = <
   builder: (p: ParamBuilder) => T,
 ) => {
   const globalSchema = getGlobalSearchParams();
+  const localSchema = defineSearchParams(builder);
   if (!globalSchema) {
-    return defineSearchParams(builder);
+    return localSchema as z.ZodObject<T>;
   }
-  const schema = defineSearchParamsWithGlobal(globalSchema)(builder);
-  return schema;
+  return globalSchema.extend(builder(getParamBuilder())) as z.ZodObject<T>;
 };
 
 export const createGlobalSearchParams = <
@@ -173,4 +172,6 @@ export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
   return passthrough ? schema.passthrough().parse(data) : schema.parse(data);
 };
 
-export type InferSearchParams<T extends z.ZodType> = z.infer<T>;
+export type InferSearchParams<T extends z.ZodType> = {
+  [K in keyof z.infer<T> as K extends string ? K : never]: z.infer<T>[K]
+} & {};

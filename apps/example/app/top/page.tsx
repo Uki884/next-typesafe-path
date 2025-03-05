@@ -45,7 +45,7 @@ export default async function HomePage({
       <ul>
         <li>
           <Link
-            href={$path("/top", { page: 1, sort: "desc", q: "", test: "a" })}
+            href={$path("/top", { page: 1, sort: "desc", q: "" })}
           >
             Top
           </Link>
