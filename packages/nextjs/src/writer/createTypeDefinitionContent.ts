@@ -2,15 +2,11 @@ import { createRouteDefinition } from "../transformer/routes/createRouteDefiniti
 import { createRoutePaths } from "../transformer/routes/createRoutePaths";
 import { FileContentOption } from "../types";
 
-/**
- * 型定義ファイル（.d.ts）のコンテンツを生成する
- */
 export const createTypeDefinitionContent = ({
   routes,
   options,
 }: FileContentOption): string => {
   const routePaths = createRoutePaths({ routes, options });
-  // ルート定義を生成し、フラット化する
   const routeDefinitions: { path: string; definition: string }[] = [];
   for (const route of routes) {
     const result = createRouteDefinition({ route, options });
@@ -31,17 +27,15 @@ declare module "@@@safe-routes/nextjs" {
   type ExportedQuery<T> = IsSearchParams<T> extends true
     ? { [K in keyof T]: T[K] } & GlobalSearchParams
     : GlobalSearchParams;
-    : GlobalSearchParams;
+  type SafeRoutePath = ${routePaths}
 
   interface RouteList {
 ${routeDefinitions
-  .map(({ path, definition }) => {
-    return `    "${path}": ${definition}`;
-  })
-  .join(",\n")}
+        .map(({ path, definition }) => {
+          return `    "${path}": ${definition}`;
+        })
+        .join(",\n")}
   }
-
-  type SafeRoutePath = ${routePaths};
 }
 `;
 

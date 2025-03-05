@@ -37,9 +37,9 @@ export const createRouteDefinition = ({
     return {
       path: path.replace(/"/g, ""),
       definition: `{
-  params: ${paramsType},
-  searchParams: ExportedQuery<${searchParamsType}>
-}`,
+      params: ${paramsType},
+      searchParams: ExportedQuery<${searchParamsType}>
+    }`,
     };
   }
 
@@ -52,16 +52,16 @@ export const createRouteDefinition = ({
     {
       path: basePath.replace(/"/g, ""),
       definition: `{
-  params: Record<string, never>,
-  searchParams: ExportedQuery<${searchParamsType}>
-}`,
+      params: Record<string, never>,
+      searchParams: ExportedQuery<${searchParamsType}>
+    }`,
     },
     {
       path: path.replace(/"/g, ""),
       definition: `{
-  params: ${createParamsType(route, true)},
-  searchParams: ExportedQuery<${searchParamsType}>
-}`,
+      params: ${createParamsType(route, true)},
+      searchParams: ExportedQuery<${searchParamsType}>
+    }`,
     },
   ];
 };
