@@ -1,6 +1,5 @@
 import path from "path";
 import { mkdir } from "fs/promises";
-import { createGlobalSearchParamsFile } from "./generator/createGlobalSearchParamsFile";
 import { createAppScanner } from "./scanner/createAppScanner";
 import { createPagesScanner } from "./scanner/createPagesScanner";
 import { UserOptions } from "./types";
@@ -19,8 +18,6 @@ export const generateTypes = async ({
   options,
 }: Options): Promise<void> => {
   const { outDir } = options;
-
-  await createGlobalSearchParamsFile(outDir);
 
   // create scanner
   const appScannerFn = createAppScanner({ inputDir: appDir });
