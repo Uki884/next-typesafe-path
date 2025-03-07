@@ -1,5 +1,5 @@
-import { createRouteDefinition } from "../transformer/routes/createRouteDefinition";
-import { createRoutePaths } from "../transformer/routes/createRoutePaths";
+import { createRouteDefinition } from "../transformer/createRouteDefinition";
+import { createRoutePaths } from "../transformer/createRoutePaths";
 import { FileContentOption } from "../types";
 
 export const createTypeDefinitionContent = ({
@@ -22,11 +22,11 @@ export const createTypeDefinitionContent = ({
 
 declare module "@@@safe-routes/nextjs" {
   type IsSearchParams<T> = symbol extends keyof T ? false : true;
-  type Config = import("${options.outDir}/safe-routes.config").GlobalSearchParams;
-  type GlobalSearchParams = IsSearchParams<Config> extends true ? Config : {};
+  type SearchParamsConfig = import("${options.outDir}/safe-routes.config").SearchParams;
+  type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : {};
   type ExportedQuery<T> = IsSearchParams<T> extends true
-    ? { [K in keyof T]: T[K] } & GlobalSearchParams
-    : GlobalSearchParams;
+    ? { [K in keyof T]: T[K] } & SearchParams
+    : SearchParams;
   type SafeRoutePath = ${routePaths}
 
   interface RouteList {

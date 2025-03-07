@@ -1,6 +1,6 @@
 import path from "path";
 import { readdir, stat } from "fs/promises";
-import { generateSearchParamsType } from "../generator/generateSearchParamsType";
+import { generateSearchParamsType } from "./utils/generateSearchParamsType";
 import { RouteFunctionDefinition, RouteSegment } from "../types";
 import { isIgnoreRoute } from "./utils/isIgnoreRoute";
 import { parseRouteSegment } from "./utils/parseRouteSegment";

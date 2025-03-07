@@ -1,9 +1,8 @@
 export {
-  defineSearchParamsWithGlobal,
+  type InferSearchParams,
   createSearchParams,
   parseSearchParams,
-  type InferSearchParams,
   setGlobalSearchParams,
-  getGlobalSearchParams,
-  createGlobalSearchParams
-} from "./params/createSearchParams";
+} from "./searchParams";
+
+export { $path } from "./path";

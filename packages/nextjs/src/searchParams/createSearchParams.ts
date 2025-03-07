@@ -1,34 +1,5 @@
 import { z } from "zod";
-
-class GlobalSearchParamsManager {
-  private static instance: GlobalSearchParamsManager;
-  private schema: z.ZodObject<z.ZodRawShape> | null = null;
-  private initialized = false;
-  private constructor() {}
-
-  public static getInstance(): GlobalSearchParamsManager {
-    if (!GlobalSearchParamsManager.instance) {
-      GlobalSearchParamsManager.instance = new GlobalSearchParamsManager();
-    }
-    return GlobalSearchParamsManager.instance;
-  }
-
-  public setSchema(schema: z.ZodObject<z.ZodRawShape>): void {
-    if (this.initialized) {
-      return;
-    }
-
-    this.schema = schema;
-    this.initialized = true;
-  }
-
-  public getSchema(): z.ZodObject<z.ZodRawShape> | undefined {
-    if (!this.schema) {
-      return undefined;
-    }
-    return this.schema;
-  }
-}
+import { getGlobalSearchParams } from "./globalSearchParams";
 
 export type ParamBuilder = {
   stringOr: (defaultValue?: string) => z.ZodType<string>;
@@ -111,24 +82,6 @@ const getParamBuilder = () => {
   return p;
 };
 
-export const setGlobalSearchParams = (
-  schema: z.ZodObject<z.ZodRawShape>,
-): void => {
-  GlobalSearchParamsManager.getInstance().setSchema(schema);
-};
-
-export const getGlobalSearchParams = () => {
-  return GlobalSearchParamsManager.getInstance().getSchema();
-};
-
-export const defineSearchParamsWithGlobal =
-  (globalSchema: z.ZodObject<z.ZodRawShape>) =>
-    <T extends Record<string, z.ZodType>>(builder: (p: ParamBuilder) => T ) => {
-    const p = getParamBuilder();
-    const schema = builder(p);
-    return globalSchema.extend(schema);
-  };
-
 export const defineSearchParams = <T extends Record<string, z.ZodType>>(
   builder: (p: ParamBuilder) => T,
 ) => {
@@ -144,6 +97,7 @@ export const createSearchParams = <
 ) => {
   const globalSchema = getGlobalSearchParams();
   const localSchema = defineSearchParams(builder);
+
   if (!globalSchema) {
     return localSchema as z.ZodObject<T>;
   }
@@ -178,6 +132,3 @@ export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
   return passthrough ? schema.passthrough().parse(data) : schema.parse(data);
 };
 
-export type InferSearchParams<T extends z.ZodType> = {
-  [K in keyof z.infer<T> as K extends string ? K : never]: z.infer<T>[K]
-} & {};

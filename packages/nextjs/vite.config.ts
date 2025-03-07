@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [dts()],
   build: {
     lib: {
-      entry: ["src/cli.ts", "src/index.ts", "src/path.ts"],
+      entry: ["src/cli.ts", "src/index.ts"],
       formats: ["es"],
     },
     rollupOptions: {

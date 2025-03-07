@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { $path } from "../path";
+import { $path } from "./path";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const $testPath: (...args: any[]) => ReturnType<typeof $path> = $path;

@@ -1,5 +1,5 @@
-import { FileContentOption, RouteFunctionDefinition } from "../../types";
-import { RouteSegment } from "../../types/route";
+import { FileContentOption, RouteFunctionDefinition } from "../types";
+import { RouteSegment } from "../types/route";
 import { convertPathToParamFormat } from "./createRoutePaths";
 
 type CreateRouteDefinitionOption = {

@@ -1,4 +1,4 @@
-import { FileContentOption, RouteSegment } from "../../types";
+import { FileContentOption, RouteSegment } from "../types";
 
 export const convertPathToParamFormat = (segments: RouteSegment[]) => {
   if (segments.length === 0) return "";
