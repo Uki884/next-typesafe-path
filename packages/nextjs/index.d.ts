@@ -1,2 +1,2 @@
-export * from "./src/params/createSearchParams";
-export * from "./src/path";
+export * from "./dist/src/params/createSearchParams";
+export * from "./dist/src/path";
