@@ -169,6 +169,12 @@ export const parseSearchParams = <T extends z.ZodObject<z.ZodRawShape>>(
   const data =
     input instanceof URLSearchParams ? Object.fromEntries(input) : input;
 
+  const globalSchema = getGlobalSearchParams();
+
+  if (globalSchema) {
+    const mergedSchema = globalSchema.merge(schema);
+    return passthrough ? mergedSchema.passthrough().parse(data) : mergedSchema.parse(data);
+  }
   return passthrough ? schema.passthrough().parse(data) : schema.parse(data);
 };
 
