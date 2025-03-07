@@ -6,6 +6,7 @@
     "lint": "biome lint --apply ./",
     "format": "biome format --apply ./",
     "fix": "biome check --apply ./",
+    "generate": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
     "typecheck": "pnpm -r typecheck",
