@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.9
+
+### Patch Changes
+
+- [#33](https://github.com/Uki884/safe-routes/pull/33) [`420ee12`](https://github.com/Uki884/safe-routes/commit/420ee12fa4c4c6e34010b71b66bafbfbb500bf46) Thanks [@Uki884](https://github.com/Uki884)! - feat: update safe routes generation with global search params support
+
 ## 0.0.8
 
 ### Patch Changes
