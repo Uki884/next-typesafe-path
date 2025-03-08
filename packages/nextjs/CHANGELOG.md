@@ -1,5 +1,11 @@
 # @safe-routes/nextjs
 
+## 0.0.12
+
+### Patch Changes
+
+- [#39](https://github.com/Uki884/safe-routes/pull/39) [`40700a6`](https://github.com/Uki884/safe-routes/commit/40700a60433599e1a5314eea32b1da03d1969d0a) Thanks [@Uki884](https://github.com/Uki884)! - remove generate safe-routes.config.ts
+
 ## 0.0.11
 
 ### Patch Changes
