@@ -1,16 +1,16 @@
 {
-  "name": "@safe-routes/example",
+  "name": "@next-typesafe-path/example",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:safe-routes & npm run dev:next",
+    "dev": "npm run dev:next & npm run dev:path",
     "dev:next": "next dev",
-    "dev:safe-routes": "safe-routes --watch --trailing-slash false",
-    "build": "safe-routes --trailing-slash false && next build",
+    "dev:path": "next-typesafe-path --watch --trailing-slash false --config-dir ./utils",
+    "build": "next-typesafe-path --trailing-slash false --config-dir ./utils && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@safe-routes/nextjs": "workspace:*",
+    "next-typesafe-path": "workspace:*",
     "next": "14.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

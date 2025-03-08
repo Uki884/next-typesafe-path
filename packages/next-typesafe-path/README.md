@@ -1,4 +1,4 @@
-# @safe-routes/nextjs
+# next-typesafe-path
 
 Zero-dependency type-safe routing utilities that work seamlessly with Next.js App Router and Pages Router.
 
@@ -26,18 +26,18 @@ This project is inspired by:
 ## Installation
 
 ```bash
-npm install @safe-routes/nextjs --save-dev
+npm install next-typesafe-path --save-dev
 # or
-yarn add @safe-routes/nextjs --dev
+yarn add next-typesafe-path --dev
 # or
-pnpm add @safe-routes/nextjs --dev
+pnpm add next-typesafe-path --dev
 # or
-npx @safe-routes/nextjs
+npx next-typesafe-path
 ```
 
 ## Setup
 
-The CLI will generate type definitions in the `.safe-routes` directory at the root of your project.
+The CLI will generate type definitions in the `` directory at the root of your project.
 
 Add the CLI to your package.json scripts:
 
@@ -79,11 +79,11 @@ You can customize the output directory using the `--out-dir` option:
 ## CLI Options
 
 ```bash
-Usage: safe-routes [options]
+Usage: next-typesafe-path [options]
 
 Options:
   -w, --watch            Watch for file changes and regenerate types
-  -o, --out-dir <path>  Output directory (default: .safe-routes)
+  -
   -t, --trailing-slash true | false  Enable trailing slash in generated routes (default: true)
   -h, --help           Display help for command
 ```

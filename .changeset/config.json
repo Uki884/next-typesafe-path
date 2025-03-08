@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "Uki884/safe-routes"
+      "repo": "Uki884/next-typesafe-path"
     }
   ],
   "commit": false,

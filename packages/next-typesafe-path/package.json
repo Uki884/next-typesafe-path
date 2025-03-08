@@ -1,5 +1,6 @@
 {
-  "name": "@safe-routes/nextjs",
+  "name": "next-typesafe-path",
+  "license": "MIT",
   "version": "0.0.12",
   "publishConfig": {
     "access": "public",
@@ -8,19 +9,21 @@
   "private": false,
   "type": "module",
   "sideEffects": false,
-  "description": "Type-safe route utilities for Next.js",
+  "description": "Type-safe path for Next.js",
   "keywords": [
     "nextjs",
     "typescript",
     "routing",
-    "type-safe"
+    "type-safe",
+    "navigation",
+    "search params",
+    "query params"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Uki884/safe-routes.git",
-    "directory": "packages/nextjs"
+    "url": "git+https://github.com/Uki884/next-typesafe-path.git",
+    "directory": "packages/next-typesafe-path"
   },
-  "license": "MIT",
   "scripts": {
     "prepare": "vite build",
     "dev": "vite",
@@ -30,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "bin": {
-    "safe-routes": "dist/cli.js"
+    "next-typesafe-path": "dist/cli.js"
   },
   "files": [
     "dist",
