@@ -38,7 +38,20 @@ Run the following command to generate type definitions:
 npx next-typesafe-path
 ```
 
-This command generates a `_next-typesafe-path.d.ts` file in the root of your project.
+Add the CLI to your package.json scripts:
+
+```json
+{
+  "scripts": {
+    "dev": "npm run dev:path & npm run dev:next",
+    "dev:path": "next-typesafe-path --watch",
+    "dev:next": "next dev",
+    "build": "next-typesafe-path && next build"
+  }
+}
+```
+
+generate a `_next-typesafe-path.d.ts` file in the root of your project.
 
 #### Options
 
