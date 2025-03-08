@@ -52,8 +52,6 @@ program
       const trailingSlash = options.trailingSlash === "true";
       const configDir = options.configDir || ".";
 
-      console.log('configDir', options);
-
       if (!appDir && !pagesDir) {
         console.error(
           "Error: Neither 'app' nor 'pages' directory found in root or src directory",
@@ -69,8 +67,6 @@ program
           configDir,
         },
       };
-
-      console.log('config', config);
 
       let timeoutId: NodeJS.Timeout | null = null;
       const debouncedGenerate = () => {
