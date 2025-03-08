@@ -1,7 +1,7 @@
 {
   "name": "next-typesafe-path",
   "license": "MIT",
-  "version": "0.0.12",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
