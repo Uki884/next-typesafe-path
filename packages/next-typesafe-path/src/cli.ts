@@ -31,7 +31,7 @@ program
   .option(
     "-c, --config-dir <path>",
     "Directory to the config file",
-    "./",
+    ".",
   )
   .action(
     async (options: {
