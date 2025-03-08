@@ -2,7 +2,7 @@ import {
   InferSearchParams,
   createSearchParams,
   parseSearchParams,
-} from "@safe-routes/nextjs";
+} from "../../../../../packages/next-typesafe-path";
 
 const SearchParams = createSearchParams((q) => ({
   page: q.numberOr(1),

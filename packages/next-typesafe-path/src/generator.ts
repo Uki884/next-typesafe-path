@@ -1,5 +1,4 @@
 import path from "path";
-import { mkdir } from "fs/promises";
 import { createAppScanner } from "./scanner/createAppScanner";
 import { createPagesScanner } from "./scanner/createPagesScanner";
 import { UserOptions } from "./types";
@@ -17,7 +16,6 @@ export const generateTypes = async ({
   pagesDir,
   options,
 }: Options): Promise<void> => {
-  const { outDir } = options;
 
   // create scanner
   const appScannerFn = createAppScanner({ inputDir: appDir });
@@ -30,10 +28,7 @@ export const generateTypes = async ({
   // combine all routes
   const routes = [...appRoutes, ...pagesRoutes];
 
-  // create directory if not exists
-  await mkdir(outDir, { recursive: true });
-
-  const typeDefPath = path.join(process.cwd(), "safe-routes.d.ts");
+  const typeDefPath = path.join(process.cwd(), "_next-typesafe-path.d.ts");
 
   // create type definition file content
   const typeDefinitionContent = createTypeDefinitionContent({

@@ -20,23 +20,24 @@ const findRootDir = (startDir: string = process.cwd()): string => {
 };
 
 program
-  .name("safe-routes")
-  .description("Generate type-safe routes for Next.js")
+  .name("next-typesafe-path")
+  .description("Generate type-safe path for Next.js")
   .option("-w, --watch", "Watch for file changes and regenerate types")
-  .option(
-    "-o, --out-dir <path>",
-    "Output directory (default: libs/safe-routes)",
-  )
   .option(
     "--trailing-slash <boolean>",
     "Enable trailing slash in generated routes",
     "true",
   )
+  .option(
+    "-c, --config-dir <path>",
+    "Directory to the config file",
+    "./",
+  )
   .action(
     async (options: {
       trailingSlash: "true" | "false";
-      outDir: string;
       watch: boolean;
+      configDir: string;
     }) => {
       const findDirectory = (baseName: string): string | null => {
         const rootPath = path.resolve(process.cwd(), baseName);
@@ -49,6 +50,7 @@ program
       const appDir = findDirectory("app") || "";
       const pagesDir = findDirectory("pages") || "";
       const trailingSlash = options.trailingSlash === "true";
+      const configDir = options.configDir || ".";
 
       if (!appDir && !pagesDir) {
         console.error(
@@ -56,14 +58,13 @@ program
         );
         process.exit(1);
       }
-      const outDir = options.outDir || ".";
 
       const config = {
         appDir,
         pagesDir,
         options: {
           trailingSlash,
-          outDir,
+          configDir,
         },
       };
 
@@ -83,7 +84,7 @@ program
 
       console.log("==================================");
       console.log("✨ Generating routes types...");
-      console.log("🚀 by @safe-routes/nextjs");
+      console.log("🚀 by next-typesafe-path");
       console.log("==================================");
 
       if (options.watch) {

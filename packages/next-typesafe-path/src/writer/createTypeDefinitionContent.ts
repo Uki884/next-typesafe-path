@@ -17,17 +17,17 @@ export const createTypeDefinitionContent = ({
     }
   }
 
-  const content = `// This file is auto-generated from @safe-routes/nextjs
+  const content = `// This file is auto-generated from next-typesafe-path
 // DO NOT EDIT DIRECTLY
 
-declare module "@@@safe-routes/nextjs" {
+declare module "@@@next-typesafe-path" {
   type IsSearchParams<T> = symbol extends keyof T ? false : true;
-  type SearchParamsConfig = import("${options.outDir}/safe-routes.config").SearchParams;
+  type SearchParamsConfig = import("${options.configDir}/next-typesafe-path.config").SearchParams;
   type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : {};
   type ExportedQuery<T> = IsSearchParams<T> extends true
     ? { [K in keyof T]: T[K] } & SearchParams
     : SearchParams;
-  type SafeRoutePath = ${routePaths}
+  type RoutePath = ${routePaths}
 
   interface RouteList {
 ${routeDefinitions

@@ -1,4 +1,4 @@
-import { $path } from "@safe-routes/nextjs";
+import { $path } from "../../../packages/next-typesafe-path";
 
 export type SearchParams = {
   locale: "en";

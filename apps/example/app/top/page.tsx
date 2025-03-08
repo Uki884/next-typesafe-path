@@ -3,7 +3,7 @@ import {
   InferSearchParams,
   createSearchParams,
   parseSearchParams,
-} from "@safe-routes/nextjs";
+} from "../../../../packages/next-typesafe-path";
 
 import Link from "next/link";
 

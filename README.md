@@ -1,10 +1,6 @@
-# Safe Routes
-
-Type-safe routing utilities for Web applications.
-
 ## Packages
 
-- [@safe-routes/nextjs](./packages/nextjs/README.md) - Type-safe route utilities for Next.js App Router and Pages Router
+- [next-typesafe-path](./packages/next-typesafe-path/README.md) - Type-safe path utilities for Next.js App Router and Pages Router
 
 ## Development
 
@@ -31,7 +27,7 @@ pnpm dev
 pnpm build
 
 # Build specific package
-cd packages/nextjs
+cd packages/next-typesafe-path
 pnpm build
 ```
 
@@ -51,7 +47,7 @@ pnpm test
 │       └── pages/       # Pages Router examples
 │
 └── packages/
-    └── nextjs/          # Main package
+    └── next-typesafe-path/          # Main package
 ```
 
 ## Contributing

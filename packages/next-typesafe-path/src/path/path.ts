@@ -1,47 +1,47 @@
-import { RouteList } from "@@@safe-routes/nextjs";
+import { RouteList } from "@@@next-typesafe-path";
 
 type SearchParams = {
   [key: string]: unknown;
 };
 
-type SafeRoutePath = keyof RouteList & string;
-type SafeRouteParams<T extends SafeRoutePath> = RouteList[T]["params"];
-type SafeRouteSearchParams<T extends SafeRoutePath> =
+type RoutePath = keyof RouteList & string;
+type RouteParams<T extends RoutePath> = RouteList[T]["params"];
+type RouteSearchParams<T extends RoutePath> =
   RouteList[T]["searchParams"];
 
 type IsAllOptional<T> = { [K in keyof T]?: unknown } extends T ? true : false;
 type HasSearchParams<T> = T extends { searchParams: undefined } ? false : true;
 type HasParams<T> = T extends Record<string, never> ? false : true;
-type PickSearchParams<T extends SafeRoutePath> = Pick<
+type PickSearchParams<T extends RoutePath> = Pick<
   RouteList[T],
   "searchParams"
 >;
 
-type RouteParameters<T extends SafeRoutePath> = {
+type RouteParameters<T extends RoutePath> = {
   RequiredBoth: [
-    params: SafeRouteParams<T>,
-    searchParams: SafeRouteSearchParams<T>,
+    params: RouteParams<T>,
+    searchParams: RouteSearchParams<T>,
   ];
   RequiredParamsOptionalSearch: [
-    params: SafeRouteParams<T>,
-    searchParams?: SafeRouteSearchParams<T>,
+    params: RouteParams<T>,
+    searchParams?: RouteSearchParams<T>,
   ];
-  ParamsOnly: [params: SafeRouteParams<T>];
-  SearchOnly: [searchParams: SafeRouteSearchParams<T>];
-  OptionalSearchOnly: [searchParams?: SafeRouteSearchParams<T>];
+  ParamsOnly: [params: RouteParams<T>];
+  SearchOnly: [searchParams: RouteSearchParams<T>];
+  OptionalSearchOnly: [searchParams?: RouteSearchParams<T>];
   None: [];
 };
 
-type SafeRouteArgs<T extends SafeRoutePath> = HasParams<
-  SafeRouteParams<T>
+type RouteArgs<T extends RoutePath> = HasParams<
+  RouteParams<T>
 > extends true
   ? HasSearchParams<PickSearchParams<T>> extends true
-    ? IsAllOptional<SafeRouteSearchParams<T>> extends true
+    ? IsAllOptional<RouteSearchParams<T>> extends true
       ? RouteParameters<T>["RequiredParamsOptionalSearch"]
       : RouteParameters<T>["RequiredBoth"]
     : RouteParameters<T>["ParamsOnly"]
   : HasSearchParams<PickSearchParams<T>> extends true
-    ? IsAllOptional<SafeRouteSearchParams<T>> extends true
+    ? IsAllOptional<RouteSearchParams<T>> extends true
       ? RouteParameters<T>["OptionalSearchOnly"]
       : RouteParameters<T>["SearchOnly"]
     : RouteParameters<T>["None"];
@@ -73,9 +73,9 @@ const buildSearchParams = (params?: SearchParams): string => {
   return `?${searchParams.toString()}`;
 };
 
-export const $path = <T extends SafeRoutePath>(
+export const $path = <T extends RoutePath>(
   path: T,
-  ...args: SafeRouteArgs<T>
+  ...args: RouteArgs<T>
 ) => {
   const pathString = path as string;
   const hasDynamicParams = pathString.includes("[");

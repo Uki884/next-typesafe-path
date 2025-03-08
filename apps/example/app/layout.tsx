@@ -1,4 +1,4 @@
-import "../safe-routes.config";
+import "../utils/next-typesafe-path.config";
 
 export const metadata = {
   title: "Next.js",
