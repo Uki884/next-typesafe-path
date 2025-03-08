@@ -1,27 +1,20 @@
 # next-typesafe-path
 
-Zero-dependency type-safe routing utilities that work seamlessly with Next.js App Router and Pages Router.
+A library for type-safe routing in Next.js.
 
 ## Features
 
-- Full TypeScript support
-- Zero runtime dependencies
-- App Router support
-  - Dynamic routes ([id])
-  - Catch-all routes ([...slug])
-  - Optional catch-all routes ([[...name]])
-  - SearchParams type inference
-- Pages Router support
-  - Dynamic routes
-  - Catch-all routes
-  - Index routes
-  - Nested routes
-  - SearchParams type inference
+- Type-safe routing for Next.js
+- Support for dynamic routes (`[id]`), catch-all routes (`[...slug]`), and optional catch-all routes (`[[...slug]]`)
+- Type-safe handling of search parameters (query parameters)
+- Define globally available search parameters
+- Compatible with both App Router and Pages Router
 
 ## Acknowledgments
 
 This project is inspired by:
 - [safe-routes](https://github.com/yesmeck/safe-routes) - Type-safe routing for React Router apps
+
 
 ## Installation
 
@@ -30,182 +23,214 @@ npm install next-typesafe-path --save-dev
 # or
 yarn add next-typesafe-path --dev
 # or
-pnpm add next-typesafe-path --dev
+pnpm add next-typesafe-path --save-dev
 # or
 npx next-typesafe-path
 ```
 
-## Setup
-
-The CLI will generate type definitions in the `` directory at the root of your project.
-
-Add the CLI to your package.json scripts:
-
-```json
-{
-  "scripts": {
-    "dev": "npm run dev:routes & npm run dev:next",
-    "dev:routes": "safe-routes --watch",
-    "dev:next": "next dev",
-    "build": "safe-routes && next build"
-  }
-}
-```
-
-You can customize the output directory using the `--out-dir` option:
-
-1. Update your package.json scripts:
-
-```json
-{
-  "scripts": {
-    "dev:routes": "safe-routes --watch --out-dir ./custom/path"
-  }
-}
-```
-
-2. Update your tsconfig.json:
-
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@safe-routes/nextjs": ["./custom/path"]
-    }
-  }
-}
-```
-
-## CLI Options
-
-```bash
-Usage: next-typesafe-path [options]
-
-Options:
-  -w, --watch            Watch for file changes and regenerate types
-  -
-  -t, --trailing-slash true | false  Enable trailing slash in generated routes (default: true)
-  -h, --help           Display help for command
-```
-
-### Examples
-
-```bash
-# Watch mode with custom output directory
-safe-routes --watch --out-dir ./types
-```
-
 ## Usage
 
-The `safeRoute` function provides type-safe routing with the following signature:
+### 1. Generate Type Definitions
 
-```typescript
-import { safeRoute } from '@safe-routes/nextjs';
+Run the following command to generate type definitions:
 
-// For dynamic routes
-safeRoute(path, params, searchParams?)
-
-// For static routes
-safeRoute(path, searchParams?)
+```bash
+npx next-typesafe-path
 ```
 
-### Search Parameters Behavior
+This command generates a `_next-typesafe-path.d.ts` file in the root of your project.
 
-The `searchParams` argument becomes optional when:
-- The `SearchParams` type is not defined in the page component
-- All properties in `SearchParams` are optional
+#### Options
+
+- `--config-dir`: Specify the configuration file directory (default: project root)
+- `--trailing-slash`: Add trailing slashes to URLs (default: `false`)
+- `--watch`: Watch for file changes and regenerate type definitions automatically
+
+### 2. Set Up Global Search Parameters (Optional)
+
+Create a `next-typesafe-path.config.ts` file in the root of your project to define globally available search parameters:
 
 ```typescript
-// Case 1: All optional properties - searchParams is optional
-export type SearchParams = {
-  lang?: string;
-  page?: number;
-};
-safeRoute('/about/');  // OK
-safeRoute('/about/', { lang: 'en' });  // OK
+// next-typesafe-path.config.ts
+import { createSearchParams, InferSearchParams, setGlobalSearchParams } from "next-typesafe-path";
 
-// Case 2: Has required properties - searchParams is required
-export type SearchParams = {
-  lang: string;    // required
-  page?: number;   // optional
-};
-safeRoute('/about/');  // Error: searchParams is required
-safeRoute('/about/', { lang: 'en' });  // OK
+export const searchParams = createSearchParams((p) => ({
+  // Define your global search parameters here
+  locale: p.enumOr(["en", "ja"], "ja").optional(),
+}));
 
-// Case 3: No SearchParams type - searchParams is optional
-safeRoute('/about/');  // OK
+export type SearchParams = InferSearchParams<typeof searchParams>;
+
+// Set global configuration
+setGlobalSearchParams(searchParams);
 ```
 
-### Examples
-
-1. Static Routes (no parameters):
+Next, import this configuration file in your `layout.tsx` (for App Router) or `_app.tsx` (for Pages Router):
 
 ```typescript
-// Simple route
-safeRoute('/about/');  // => /about/
+// app/layout.tsx (App Router)
+import "../next-typesafe-path.config";
 
-// With search params
-export type SearchParams = {
-  lang?: 'en' | 'ja';
-};
-safeRoute('/about/', { lang: 'en' });  // => /about/?lang=en
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
 ```
 
-2. Dynamic Routes:
-
 ```typescript
-// Single dynamic parameter
-export type SearchParams = {
-  tab?: 'profile' | 'settings';
-};
-safeRoute('/users/[id]/', { id: '123' });  // => /users/123/
-safeRoute('/users/[id]/', { id: '123' }, { tab: 'profile' });  // => /users/123/?tab=profile
+// pages/_app.tsx (Pages Router)
+import "../next-typesafe-path.config";
+import type { AppProps } from "next/app";
 
-// Multiple dynamic parameters
-safeRoute(
-  '/users/[userId]/posts/[postId]/',
-  { userId: '123', postId: '456' }
-);  // => /users/123/posts/456/
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
+}
 ```
 
-3. Catch-all Routes:
+### 3. Use Routing
+
+#### Generate Paths
+
+Use the `$path` function to generate type-safe paths:
 
 ```typescript
-// Required catch-all
-safeRoute(
-  '/shop/[...categories]/',
-  { categories: ['men', 'shoes'] }
-);  // => /shop/men/shoes/
+import { $path } from "next-typesafe-path";
 
-// Optional catch-all routes are split into two patterns:
-// Pattern 1: Base route without parameters
-safeRoute('/products/');  // => /products/
+// Regular path
+const path1 = $path("/about");
 
-// Pattern 2: Route with optional catch-all
-// Note: When using this pattern, params are required
-safeRoute(
-  '/products/[[...filters]]/',
-  { filters: ['sale', 'winter'] }
-);  // => /products/sale/winter/
+// Dynamic route
+const path2 = $path("/users/[id]", { id: "123" });
 
-// This will cause a type error:
-safeRoute('/products/[[...filters]]/');  // Error: params are required when specified
+// Path with search parameters
+const path3 = $path("/blog", { page: 1, sort: "desc" });
+
+// Dynamic route + search parameters
+const path4 = $path("/users/[id]", { id: "123" }, { tab: "profile" });
+
+// Catch-all route
+const path5 = $path("/shop/[...categories]", { categories: ["men", "shoes"] });
+
+// Optional catch-all route
+const path6 = $path("/products/[[...filters]]", { filters: ["sort", "price"] });
+
+// Optional catch-all route without path param
+const path7 = $path("/products/");
 ```
 
-4. Route Groups:
+#### Define and Use Search Parameters
+
+Define search parameters in your page component and use them in a type-safe way:
+
+```tsx
+// app/blog/page.tsx (App Router)
+import { createSearchParams, InferSearchParams, parseSearchParams } from "next-typesafe-path";
+
+// Define search parameters
+const SearchParams = createSearchParams((p) => ({
+  page: p.numberOr(1),
+  sort: p.enumOr(["asc", "desc"] as const, "asc"),
+  q: p.stringOr(""),
+}));
+
+// Extract type
+export type SearchParams = InferSearchParams<typeof SearchParams>;
+
+// Page component
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  // Parse search parameters
+  const params = parseSearchParams(SearchParams, await searchParams);
+
+  return (
+    <div>
+      <h1>Blog</h1>
+      <p>Page: {params.page}</p>
+      <p>Sort: {params.sort}</p>
+      <p>Query: {params.q}</p>
+      {/* Access global search parameters */}
+      <p>Locale: {params.locale}</p>
+    </div>
+  );
+}
+```
+
+```tsx
+// pages/blog.tsx (Pages Router)
+import { createSearchParams, InferSearchParams, parseSearchParams } from "next-typesafe-path";
+import { GetServerSideProps } from "next";
+
+// Define search parameters
+const SearchParams = createSearchParams((p) => ({
+  page: p.numberOr(1),
+  sort: p.enumOr(["asc", "desc"] as const, "asc"),
+  q: p.stringOr(""),
+}));
+
+// Extract type
+export type SearchParams = InferSearchParams<typeof SearchParams>;
+
+// Page component
+export default function BlogPage({ params }: { params: SearchParams }) {
+  return (
+    <div>
+      <h1>Blog</h1>
+      <p>Page: {params.page}</p>
+      <p>Sort: {params.sort}</p>
+      <p>Query: {params.q}</p>
+      {/* Access global search parameters */}
+      <p>Locale: {params.locale}</p>
+    </div>
+  );
+}
+
+// Parse search parameters on the server side
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const params = parseSearchParams(SearchParams, query);
+  return { props: { params } };
+};
+```
+
+## Advanced Usage
+
+### Customize Parameter Builder
+
+Use the `createSearchParams` function to create your own parameter builder:
 
 ```typescript
-// Route groups are ignored in the path
-export type SearchParams = {
-  redirect?: string;
-};
-safeRoute('/login/', { redirect: '/dashboard' });  // => /login/?redirect=/dashboard
+import { createSearchParams, InferSearchParams } from "next-typesafe-path";
+
+// Custom parameter builder
+const SearchParams = createSearchParams((p) => ({
+  // Required parameter
+  id: p.string(),
+  // Parameter with default value
+  page: p.numberOr(1),
+  // Enum parameter
+  sort: p.enumOr(["asc", "desc"] as const, "asc"),
+  // Optional parameter
+  q: p.string().optional(),
+  // Array parameter
+  tags: p.array(p.string()).optional(),
+}));
+
+// or
+
+const SearchParams = createSearchParams(() => ({
+  id: z.string(),
+  page: z.number(),
+}));
+
+// Extract type
+export type SearchParams = InferSearchParams<typeof SearchParams>;
 ```
 
 ## License
 
 MIT
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
