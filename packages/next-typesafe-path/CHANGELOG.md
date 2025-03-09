@@ -1,5 +1,11 @@
 # next-typesafe-path
 
+## 0.0.4
+
+### Patch Changes
+
+- [`86ccc96`](https://github.com/Uki884/next-typesafe-path/commit/86ccc969ad0ecc902635a13ba75838683e84691d) Thanks [@Uki884](https://github.com/Uki884)! - fix type
+
 ## 0.0.3
 
 ### Patch Changes
