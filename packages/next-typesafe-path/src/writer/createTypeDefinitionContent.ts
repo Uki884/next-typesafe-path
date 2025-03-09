@@ -21,11 +21,12 @@ export const createTypeDefinitionContent = ({
 // DO NOT EDIT DIRECTLY
 
 declare module "@@@next-typesafe-path" {
-  type IsSearchParams<T> = symbol extends keyof T ? false : true;
+  type IsEmpty<T> = T extends Record<string, never> ? true : false;
+  type IsSearchParams<T> = symbol extends keyof T ? false : IsEmpty<T> extends true ? false : true;
   type SearchParamsConfig = import("${options.configDir}/next-typesafe-path.config").SearchParams;
-  type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : { [key: string]: never };
+  type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : never;
   type ExportedQuery<T> = IsSearchParams<T> extends true
-    ? { [K in keyof T]: T[K] } | SearchParams
+    ? SearchParams extends never ? { [K in keyof T]: T[K] } : SearchParams & { [K in keyof T]: T[K] }
     : SearchParams;
   type RoutePath = ${routePaths}
 

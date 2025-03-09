@@ -2,11 +2,12 @@
 // DO NOT EDIT DIRECTLY
 
 declare module "@@@next-typesafe-path" {
-  type IsSearchParams<T> = symbol extends keyof T ? false : true;
+  type IsEmpty<T> = T extends Record<string, never> ? true : false;
+  type IsSearchParams<T> = symbol extends keyof T ? false : IsEmpty<T> extends true ? false : true;
   type SearchParamsConfig = import("./utils/next-typesafe-path.config").SearchParams;
-  type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : {};
+  type SearchParams = IsSearchParams<SearchParamsConfig> extends true ? SearchParamsConfig : never;
   type ExportedQuery<T> = IsSearchParams<T> extends true
-    ? { [K in keyof T]: T[K] } & SearchParams
+    ? SearchParams extends never ? { [K in keyof T]: T[K] } : SearchParams & { [K in keyof T]: T[K] }
     : SearchParams;
   type RoutePath = "/login" | "/blog/[slug]/[hoge]" | "/blog/[slug]" | "/products/[[...filters]]" | "/products" | "/shop/[...categories]" | "/shop" | "/top" | "/users/[user_id]/[year]/[month]" | "/users/[user_id]" | "/users/[user_id]/posts/[post-id]" | "/about" | "/docs/[...slug]" | "/video/[[...name]]" | "/video" | "/video/[id]";
 

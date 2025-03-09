@@ -9,7 +9,7 @@ type RouteParams<T extends RoutePath> = RouteList[T]["params"];
 type RouteSearchParams<T extends RoutePath> =
   RouteList[T]["searchParams"];
 
-type IsAllOptional<T> = { [K in keyof T]?: unknown } extends T ? true : false;
+type IsAllOptional<T> = { [K in keyof T]?: any } extends T ? true : false;
 type HasSearchParams<T> = T extends { searchParams: undefined } ? false : true;
 type HasParams<T> = T extends Record<string, never> ? false : true;
 type PickSearchParams<T extends RoutePath> = Pick<
